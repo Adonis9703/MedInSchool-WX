@@ -1,0 +1,34 @@
+{
+  "pages": [],
+  "window": {
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#eeeeee",
+    "backgroundTextStyle": "light"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#32AE57",
+    "borderStyle": "#e2e2e2",
+    "backgroundColor": "#fff",
+    "list": [{
+      "pagePath": "pages/home",
+      "text": "首页",
+      "iconPath": "/static/img/icon_home.png",
+      "selectedIconPath": "/static/img/icon_home_select.png"
+    },
+      {
+        "pagePath": "pages/message",
+        "text": "消息",
+        "iconPath": "/static/img/icon_message.png",
+        "selectedIconPath": "/static/img/icon_message_select.png"
+      },
+      {
+        "pagePath": "pages/my",
+        "text": "个人中心",
+        "iconPath": "/static/img/icon_personal.png",
+        "selectedIconPath": "/static/img/icon_personal_select.png"
+      }
+    ]
+  }
+}

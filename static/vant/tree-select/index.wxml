@@ -1,0 +1,30 @@
+<view
+  class="tree-select"
+  style="height: {{ treeHeight }}"
+>
+  <view class="tree-select__nav">
+    <view
+      wx:for="{{ items }}"
+      wx:key="index"
+      class="tree-select__nitem van-ellipsis {{ mainActiveIndex === index ? 'tree-select__nitem--active' : '' }}"
+      data-index="{{ index }}"
+      bind:tap="onClickNav">
+      {{ item.text }}<view wx:if="{{item.count&&item.count!=0}}" class="tree-select__itemcount">{{ item.count }}</view>
+    </view>
+  </view>
+  <view
+    class="tree-select__content"
+    style="height: {{ treeHeight }}"
+  >
+    <view
+      wx:for="{{ subItems }}"
+      wx:key="id"
+      class="tree-select__item van-ellipsis {{ activeId === item.id ? 'tree-select__item--active' : '' }} {{ item.extra ? 'tree-select__item--limited': '' }}"
+      data-item="{{ item }}"
+      bind:tap="onSelectItem"
+    >
+      <view class="tree-select__text">{{ item.text }}</view>
+      <view wx:if="item.extra" class="tree-select__extra">{{ item.extra }}</view>
+    </view>
+  </view>
+</view>
