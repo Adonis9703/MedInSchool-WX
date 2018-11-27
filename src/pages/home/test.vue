@@ -1,5 +1,7 @@
 <template>
-    <div>test</div>
+    <div>
+      <web-view src="http://baidu.com"></web-view>
+    </div>
 </template>
 
 <script>
