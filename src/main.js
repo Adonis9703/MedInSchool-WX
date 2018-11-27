@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import App from './App'
 import MpvueRouterPatch from  'mpvue-router-patch'
-import {post} from "./utils/request";
+import {post} from "./utils/request"
+import '@/assets/sass/sass_index.scss'
 
 Vue.config.productionTip = false
 Vue.prototype.$post = post
