@@ -3,7 +3,7 @@
     <div class="margin-top100">1231312</div>
     <button @click="$router.push({path: '/pages/home/test'})">test</button>
     <button @click="post">post</button>
-    <button @click="webSocket">send message</button>
+    <button @click="send">send message</button>
 
   </div>
 
@@ -12,8 +12,13 @@
 <script>
   export default {
     //todo webSocket 连接
+    data() {
+      return {
+        socketOpen: false
+      }
+    },
     onShow() {
-      // this.webSocket()
+      this.webSocket()
     },
     methods: {
       post() {
@@ -27,25 +32,37 @@
         })
       },
       webSocket() {
-        let socketOpen = false
+        wx.onSocketMessage((res) => {
+          console.log(`来自服务器的消息`, res)
+        })
         wx.connectSocket({
           url: 'ws://127.0.0.1:3000',
-          success: ()=> {
+          success: () => {
             console.log('ws connected')
           }
         })
-        console.log(1111)
-        wx.onSocketOpen((res)=> {
-          socketOpen = true
-        })
-        console.log(222)
-        if (socketOpen) {
-          wx.sendSocketMessge({
-            data: 'from wx'
-          })
-        }
-        console.log(333)
+        // wx.onSocketOpen((res) => {
+        //   this.socketOpen = true
+        //   console.log(`onSocketOpen`, res)
+        //   if (this.socketOpen) {
+        //     this.send()
+        //   }
+        // })
       },
+      sendMsg() {
+        wx.onSocketOpen((res) => {
+          this.socketOpen = true
+          console.log(`onSocketOpen`, res)
+          if (this.socketOpen) {
+            this.send()
+          }
+        })
+      },
+      send() {
+        wx.sendSocketMessage({
+          data: 'this is wx'
+        })
+      }
     }
   }
 </script>
