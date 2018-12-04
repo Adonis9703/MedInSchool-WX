@@ -3,7 +3,9 @@ import App from './App'
 import MpvueRouterPatch from  'mpvue-router-patch'
 import {post} from "./utils/request"
 import '@/assets/sass/sass_index.scss'
+import SocketIo from 'weapp.socket.io'
 
+Vue.prototype.$socket = SocketIo
 Vue.config.productionTip = false
 Vue.prototype.$post = post
 Vue.use(MpvueRouterPatch)

@@ -11,14 +11,18 @@
 
 <script>
   export default {
-    //todo webSocket 连接
+    //todo webSocket 连接 使用socket.io
     data() {
       return {
         socketOpen: false
       }
     },
     onShow() {
-      this.webSocket()
+      // let socket = this.$socket('http://127.0.0.1:3000')
+      // socket.on('get', data => {
+      //   console.log(1111111, data)
+      // })
+      // this.webSocket()
     },
     methods: {
       post() {
@@ -59,9 +63,9 @@
         })
       },
       send() {
-        wx.sendSocketMessage({
-          data: 'this is wx'
-        })
+        // wx.sendSocketMessage({
+        //   data: 'this is wx'
+        // })
       }
     }
   }

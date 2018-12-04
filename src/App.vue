@@ -7,6 +7,13 @@ export default {
     wx.setStorageSync('logs', logs)
 
     console.log('app created and cache logs by setStorageSync')
+    let socket = this.$socket('http://127.0.0.1:3000')
+    socket.emit('send', {
+      msg: '这里是客户端'
+    })
+    socket.on('get', data => {
+      console.log(data)
+    })
   }
 }
 </script>
