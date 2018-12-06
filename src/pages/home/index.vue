@@ -4,6 +4,8 @@
     <button @click="post">post</button>
     <button @click="setCache">缓存</button>
     <button @click="login">登录</button>
+    <button @click="checkToken">Token</button>
+    <van-button>van</van-button>
   </div>
 
 </template>
@@ -19,6 +21,13 @@
     onShow() {
     },
     methods: {
+      checkToken() {
+        this.$post({
+          url: 'http://127.0.0.1:3000/checkToken'
+        }).then(res => {
+          console.log(`token check `, res)
+        })
+      },
       login() {
         this.$post({
           url: this.$api.login,

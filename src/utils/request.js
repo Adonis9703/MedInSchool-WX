@@ -49,6 +49,7 @@ export const post = (option) => {
   if (store.state.token) {
     //todo token 储存方式 和 userInfo 一起或者单独存放
     header.token = store.state.token
+    // header.token = store.state.token
   }
   return new Promise((resolve, reject) => {
     wx.request({

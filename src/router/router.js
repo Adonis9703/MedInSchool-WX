@@ -4,7 +4,11 @@ const homeRoutes = [
     name: 'home',
     config: {
       navigationBarTitleText: '主页',
-      enablePullDownRefresh: true
+      enablePullDownRefresh: true,
+      usingComponents: {
+        'van-toast': '/static/vant/toast/index',
+        'van-button': '/static/vant/button/index'
+      }
     }
   },
   {
