@@ -1,7 +1,7 @@
 <template>
   <div>
-    <p class="card">
-      {{text}}
+    <p class="card-panel">
+      card-panel
     </p>
   </div>
 </template>

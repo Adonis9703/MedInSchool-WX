@@ -7,13 +7,25 @@
     -o-transition: width 2s;
 }
 
+.card-panel {
+  background: white;
+  width: 640rpx;
+  min-height: 100rpx;
+  padding: 20rpx;
+  border-radius: 8rpx;
+  margin: 0 auto;
+}
+.z-index-1{
+  z-index: -1;
+}
+
 body {
     @extend .font-size0;
     font-family: "PingFangSC-Regular", "microsoft yahei", "Arial"!important;
     background-color: #f6f6f6;
 }
 
-input,
+input
 {
     outline: none;
 }
@@ -163,6 +175,7 @@ $i: 100;
 }
 
 //kk新增
+//noinspection ALL
 .arrow-right {
     position: absolute;
     right: 30rpx;
@@ -172,6 +185,7 @@ $i: 100;
 }
 
 // 邮寄、自取标签
+//noinspection ALL
 @mixin delivery-tag($color) {
     display: inline-block;
     padding: 0 8rpx;

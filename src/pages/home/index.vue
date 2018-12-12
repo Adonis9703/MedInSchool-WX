@@ -46,7 +46,7 @@
       },
       post() {
         this.$post({
-          url: 'http://127.0.0.1:3000/hello',
+          url: 'http://47.101.185.46:3000/hello',
           param: {
             name: 'alex'
           }
@@ -60,6 +60,7 @@
 
 <style lang="scss" scoped>
   .a {
+    text-align: center;
     button {
       background-color: #999999;
     }

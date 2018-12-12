@@ -22,7 +22,9 @@ const homeRoutes = [
     path: 'pages/my',
     name: 'my',
     config: {
-      navigationBarTitleText: '我的'
+      navigationBarTitleText: '我的',
+      navigationBarBackgroundColor: '#32AE57',
+      navigationBarTextStyle: 'white',
     }
   },
   {
