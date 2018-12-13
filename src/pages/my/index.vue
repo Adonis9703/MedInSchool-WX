@@ -5,22 +5,26 @@
       <div class="logo flex-align-justify">
         <img :src="userInfo.logo ? userInfo.logo : defaultLogo"/>
       </div>
-      <div class="card-panel">
-        <div class="margin-top70 flex-align-spacearound">
-          <div class="text-align-center">
+      <div class="card-panel paddingX20 padding20X">
+        <div class="margin-top60 flex-align-spacearound">
+          <div class="text-align-center padding-bottom30">
             <i class="inline-block icon-personal2-fill font-size20 color-theme"></i>
-            <div class="color-999">{{userInfo.id}}</div>
+            <div class="color-999 margin-top20">{{userInfo.id}}</div>
           </div>
-          <div class="font-size20 color-666">{{userInfo.name}}</div>
           <div class="text-align-center">
+            <div class="font-size18 color-theme">{{userInfo.name}}</div>
+            <i class="icon-male margin-top16 font-size10 color-999"></i>
+          </div>
+          <div class="text-align-center padding-bottom30">
             <i class="inline-block icon-phone-fill font-size20 color-theme"></i>
-            <div class="color-999">{{userInfo.tel}}</div>
+            <div class="color-999 margin-top20">{{userInfo.tel}}</div>
           </div>
         </div>
       </div>
-      <div class="card-panel relative top40">
-        <i class="inline-block icon-personal2-fill font-size20 color-theme"></i>
-
+      <div class="card-panel relative top40 color-999 paddingX20">
+        <setting-cell :icon="'icon-clock'" :title="'就诊历史'" :border="true"/>
+        <setting-cell :icon="'icon-edit'" :title="'编辑个人信息'" :border="true"/>
+        <setting-cell :icon="'icon-feedback'" :title="'意见反馈'" :border="false"/>
       </div>
     </section>
   </div>
@@ -29,9 +33,11 @@
 <script>
   import background from '~/back/bg.png'
   import defaultLogo from '~/default/default_patient.png'
+  import settingCell from "@/components/setting_cell";
 
   export default {
     name: "index",
+    components: {settingCell},
     data() {
       return {
         background,
@@ -41,6 +47,10 @@
           logo: '',
           id: '5150510116',
           tel: '15869106432'
+        },
+        cellConfig: {
+          icon: 'icon-clock',
+          title: '就诊历史'
         }
       }
     },

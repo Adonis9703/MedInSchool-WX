@@ -1,6 +1,6 @@
 const homeRoutes = [
   {
-    path: 'pages/my',
+    path: 'pages/my/user_setting',
     // path: 'pages/home',
     name: 'home',
     config: {
@@ -20,13 +20,21 @@ const homeRoutes = [
     }
   },
   {
-    // path: 'pages/my',
-    path: 'pages/home',
+    path: 'pages/my',
+   
     name: 'my',
     config: {
       navigationBarTitleText: '我的',
       navigationBarBackgroundColor: '#32AE57',
       navigationBarTextStyle: 'white',
+    }
+  },
+  {
+    path: 'pages/home',
+    // path: 'pages/my/user_setting',
+    name: 'user_setting',
+    config: {
+      navigationBarTitleText: '设置',
     }
   },
   {
