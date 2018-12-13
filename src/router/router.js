@@ -1,6 +1,7 @@
 const homeRoutes = [
   {
-    path: 'pages/home',
+    path: 'pages/my',
+    // path: 'pages/home',
     name: 'home',
     config: {
       navigationBarTitleText: '主页',
@@ -19,7 +20,8 @@ const homeRoutes = [
     }
   },
   {
-    path: 'pages/my',
+    // path: 'pages/my',
+    path: 'pages/home',
     name: 'my',
     config: {
       navigationBarTitleText: '我的',

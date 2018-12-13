@@ -4,6 +4,7 @@ import MpvueRouterPatch from 'mpvue-router-patch'
 import store from '@/store/index'
 import {cache, post, api} from "./utils"
 import '@/assets/sass/sass_index.scss'
+import '@/assets/iconfont/iconfont.css'
 import SocketIo from 'weapp.socket.io'
 
 Vue.config.productionTip = false

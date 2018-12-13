@@ -6,9 +6,22 @@
         <img :src="userInfo.logo ? userInfo.logo : defaultLogo"/>
       </div>
       <div class="card-panel">
-        asdas
+        <div class="margin-top70 flex-align-spacearound">
+          <div class="text-align-center">
+            <i class="inline-block icon-personal2-fill font-size20 color-theme"></i>
+            <div class="color-999">{{userInfo.id}}</div>
+          </div>
+          <div class="font-size20 color-666">{{userInfo.name}}</div>
+          <div class="text-align-center">
+            <i class="inline-block icon-phone-fill font-size20 color-theme"></i>
+            <div class="color-999">{{userInfo.tel}}</div>
+          </div>
+        </div>
       </div>
-      <div class="card-panel"></div>
+      <div class="card-panel relative top40">
+        <i class="inline-block icon-personal2-fill font-size20 color-theme"></i>
+
+      </div>
     </section>
   </div>
 </template>
@@ -24,12 +37,14 @@
         background,
         defaultLogo,
         userInfo: {
+          name: 'Alex',
           logo: '',
           id: '5150510116',
           tel: '15869106432'
         }
       }
-    }
+    },
+    methods: {}
   }
 </script>
 
