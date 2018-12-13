@@ -1,7 +1,7 @@
 const homeRoutes = [
   {
-    path: 'pages/my/user_setting',
-    // path: 'pages/home',
+    // path: 'pages/my/user_setting',
+    path: 'pages/home',
     name: 'home',
     config: {
       navigationBarTitleText: '主页',
@@ -30,8 +30,8 @@ const homeRoutes = [
     }
   },
   {
-    path: 'pages/home',
-    // path: 'pages/my/user_setting',
+    // path: 'pages/home',
+    path: 'pages/my/user_setting',
     name: 'user_setting',
     config: {
       navigationBarTitleText: '设置',

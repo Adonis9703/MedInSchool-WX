@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div class="">
     <img class="z-index-1 absolute block height100 width100" :src="background">
-    <section class="relative top-60">
-      <div class="logo flex-align-justify">
+    <section class="relative top-60 paddingX36">
+      <div @click="goSetting"  class="logo flex-align-justify ">
         <img :src="userInfo.logo ? userInfo.logo : defaultLogo"/>
       </div>
       <div class="card-panel paddingX20 padding20X">
@@ -21,9 +21,9 @@
           </div>
         </div>
       </div>
-      <div class="card-panel relative top40 color-999 paddingX20">
+      <div class="card-panel relative top40 color-666 paddingX20">
         <setting-cell :icon="'icon-clock'" :title="'就诊历史'" :border="true"/>
-        <setting-cell :icon="'icon-edit'" :title="'编辑个人信息'" :border="true"/>
+        <setting-cell @click="goSetting" :icon="'icon-edit'" :title="'编辑个人信息'" :border="true"/>
         <setting-cell :icon="'icon-feedback'" :title="'意见反馈'" :border="false"/>
       </div>
     </section>
@@ -54,7 +54,12 @@
         }
       }
     },
-    methods: {}
+    methods: {
+      goSetting() {
+        console.log(11111)
+       this.$router.push({path: '/pages/my/user_setting'})
+      }
+    }
   }
 </script>
 

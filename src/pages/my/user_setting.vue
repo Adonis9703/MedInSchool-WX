@@ -1,6 +1,6 @@
 <template>
   <div class="padding-top40 color-666 paddingX36">
-    <div class="card-panel shadow padding28X paddingX28" style="margin-bottom: 40rpx">
+    <div class="card-panel shadow padding26X paddingX26" style="margin-bottom: 40rpx">
       <div class="logo flex-align-justify">
         <img :src="logo"/>
       </div>
@@ -11,7 +11,7 @@
       <section class="paddingX20 font-size2">
         <div class="flex-align margin20X">
           <span class="title">性别</span>
-          <div class="btn-light margin-right30">♂</div>
+          <div class="btn-light margin-right26">♂</div>
           <div class="btn-dark">♀</div>
         </div>
         <div class="flex-align margin20X">
@@ -28,7 +28,7 @@
         </div>
       </section>
     </div>
-    <div class="card-panel shadow paddingX28 padding28X ">
+    <div class="card-panel shadow paddingX26 padding26X ">
       <div class="flex-align">
         <i class="theicon-homeinsurancepay  margin-right16"></i>
         <span class=" font-size4">就诊备注</span>
@@ -37,10 +37,10 @@
       <section class="paddingX20 font-size2">
         <div class="flex-align margin20X">
           <span class="title80">血型</span>
-          <div class="btn-light margin-right30">A</div>
-          <div class="btn-dark margin-right30">B</div>
-          <div class="btn-dark margin-right30">O</div>
-          <div class="btn-dark margin-right30" style="padding: 6rpx 18rpx">AB</div>
+          <div class="btn-light margin-right26">A</div>
+          <div class="btn-dark margin-right26">B</div>
+          <div class="btn-dark margin-right26">O</div>
+          <div class="btn-dark margin-right26" style="padding: 6rpx 18rpx">AB</div>
           <div class="btn-dark" style="padding: 6rpx 18rpx">未知</div>
         </div>
         <div class="flex-align margin20X">
@@ -57,7 +57,7 @@
         </div>
       </section>
     </div>
-    <div class="btn-primary font-size4 shadow" style="margin-top: 40rpx">保 存 修 改</div>
+    <div class="btn-primary font-size4" style="margin-top: 40rpx">保 存 修 改</div>
   </div>
 </template>
 
