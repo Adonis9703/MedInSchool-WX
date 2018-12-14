@@ -2,7 +2,7 @@
   <div class="">
     <img class="z-index-1 absolute block height100 width100" :src="background">
     <section class="relative top-60 paddingX36">
-      <div @click="goSetting"  class="logo flex-align-justify ">
+      <div @click="goSetting" class="logo flex-align-justify ">
         <img :src="userInfo.logo ? userInfo.logo : defaultLogo"/>
       </div>
       <div class="card-panel paddingX20 padding20X">
@@ -22,9 +22,19 @@
         </div>
       </div>
       <div class="card-panel relative top40 color-666 paddingX20">
-        <setting-cell :icon="'icon-clock'" :title="'就诊历史'" :border="true"/>
-        <setting-cell @click="goSetting" :icon="'icon-edit'" :title="'编辑个人信息'" :border="true"/>
-        <setting-cell :icon="'icon-feedback'" :title="'意见反馈'" :border="false"/>
+        <div class="flex-baseline-spacebetween paddingX20"
+             v-for="(item, index) of cellConfig" :key="index"
+             @click="routerPush(index)"
+             :class="{'border-bottom1' : item.border}">
+          <div class="flex-align margin28X ">
+            <i :class="[item.icon, 'font-size10', 'margin-right20']"></i>
+            <span class="font-size6"> {{item.title}} </span>
+          </div>
+          <i class="inline-block icon-enter"></i>
+        </div>
+        <!--<setting-cell :icon="'icon-clock'" :title="'就诊历史'" :border="true"/>-->
+        <!--<setting-cell @click.native="goSetting" :icon="'icon-edit'" :title="'编辑个人信息'" :border="true"/>-->
+        <!--<setting-cell :icon="'icon-feedback'" :title="'意见反馈'" :border="false"/>-->
       </div>
     </section>
   </div>
@@ -48,16 +58,36 @@
           id: '5150510116',
           tel: '15869106432'
         },
-        cellConfig: {
-          icon: 'icon-clock',
-          title: '就诊历史'
-        }
+        cellConfig: [
+          {
+            icon: 'icon-clock',
+            title: '就诊历史',
+            border: true
+          },
+          {
+            icon: 'icon-edit',
+            title: '编辑个人信息',
+            border: true
+          },
+          {
+            icon: 'icon-feedback',
+            title: '意见反馈',
+            border: false
+          }
+        ]
       }
     },
     methods: {
-      goSetting() {
-        console.log(11111)
-       this.$router.push({path: '/pages/my/user_setting'})
+      routerPush(index) {
+        if (index === 0) {
+          this.$router.push({path: '/pages/my/user_setting'})
+        }
+        if (index === 1) {
+          this.$router.push({path: '/pages/my/user_setting'})
+        }
+        if (index === 2) {
+          this.$router.push({path: '/pages/my/user_setting'})
+        }
       }
     }
   }
