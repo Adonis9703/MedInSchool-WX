@@ -41,8 +41,8 @@
 </template>
 
 <script>
-  import background from '~/back/bg.png'
-  import defaultLogo from '~/default/default_patient.png'
+  import background from '~/back/bg_person.jpg'
+  import defaultLogo from '~/default/user_heading.png'
   import settingCell from "@/components/setting_cell";
 
   export default {

@@ -1,6 +1,6 @@
 <template>
   <div class="a">首页
-    <div class="margin-top100">1231312</div>
+    <div class="margin-top100">socket 测试</div>
     <button @click="post">post</button>
     <button @click="setCache">缓存</button>
     <button @click="login">登录</button>
@@ -62,7 +62,6 @@
   .a {
     text-align: center;
     button {
-      background-color: #999999;
     }
   }
 </style>

@@ -3,7 +3,7 @@
   "window": {
     "navigationBarBackgroundColor": "#ffffff",
     "navigationBarTextStyle": "black",
-    "backgroundColor": "#eeeeee",
+    "backgroundColor": "#F6F6F6",
     "backgroundTextStyle": "light"
   },
   "tabBar": {

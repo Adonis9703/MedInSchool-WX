@@ -63,7 +63,7 @@
 
 <script>
   import zust from '~/logo/logo_zust.png'
-  import logo from '~/default/default_patient.png'
+  import logo from '~/default/user_heading.png'
   export default {
     name: "user_setting",
     data() {

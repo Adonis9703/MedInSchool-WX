@@ -1,6 +1,7 @@
 const homeRoutes = [
   {
     // path: 'pages/my/user_setting',
+    // path: 'pages/message',
     path: 'pages/home',
     name: 'home',
     config: {
@@ -13,15 +14,19 @@ const homeRoutes = [
     }
   },
   {
+    // path: 'pages/home',
     path: 'pages/message',
     name: 'message',
     config: {
-      navigationBarTitleText: '消息'
+      navigationBarTitleText: '消息',
+      usingComponents: {
+        'van-toast': '/static/vant/toast/index',
+        'van-button': '/static/vant/button/index'
+      }
     }
   },
   {
     path: 'pages/my',
-   
     name: 'my',
     config: {
       navigationBarTitleText: '我的',
@@ -42,6 +47,13 @@ const homeRoutes = [
     name: 'test',
     config: {
       navigationBarTitleText: 'test'
+    }
+  },
+  {
+    path: 'pages/message/chat_room',
+    name: 'chat_room',
+    config: {
+      navigationBarTitleText: '问诊中'
     }
   }
 ]
