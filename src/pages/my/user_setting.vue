@@ -95,7 +95,7 @@
   input {
     display: inline-block;
     background-color: #f5f5f5;
-    border-radius: 8rpx;
+    border-radius: 10rpx;
     padding-left: 20rpx;
     color: #666666;
   }
@@ -125,7 +125,7 @@
     display: inline-block;
     background-color: #32AE57;
     color: white;
-    border-radius: 8rpx;
+    border-radius: 10rpx;
     padding: 6rpx 26rpx;
   }
 
@@ -133,7 +133,7 @@
     display: inline-block;
     background-color: #f5f5f5;
     color: #32AE57;
-    border-radius: 8rpx;
+    border-radius: 10rpx;
     padding: 6rpx 26rpx;
   }
 

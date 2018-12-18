@@ -25,7 +25,7 @@
           </div>
         </section>
       </div>
-      <div class="end text-align-center font-size6 flex-align" @click="handleDelete">删除</div>
+      <div class="end text-align-center font-size6 flex-align" @click.stop="handleDelete">删除</div>
     </div>
 
   </div>

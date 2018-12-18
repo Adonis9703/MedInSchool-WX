@@ -44,7 +44,7 @@
       /*margin-right: 20rpx;*/
       /*background: white;*/
       padding: 26rpx 26rpx;
-      border-radius: 8rpx;
+      border-radius: 10rpx;
     }
   }
 </style>

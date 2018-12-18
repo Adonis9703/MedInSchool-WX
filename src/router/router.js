@@ -10,7 +10,8 @@ const homeRoutes = [
       // enablePullDownRefresh: true,
       usingComponents: {
         'van-toast': '/static/vant/toast/index',
-        'van-button': '/static/vant/button/index'
+        'van-button': '/static/vant/button/index',
+        'van-popup': '/static/vant/popup/index',
       }
     }
   },
@@ -23,7 +24,7 @@ const homeRoutes = [
       enablePullDownRefresh: true,
       usingComponents: {
         'van-toast': '/static/vant/toast/index',
-        'van-button': '/static/vant/button/index'
+        'van-button': '/static/vant/button/index',
       }
     }
   },
@@ -45,18 +46,15 @@ const homeRoutes = [
     }
   },
   {
-    path: 'pages/home/test',
-    name: 'test',
-    config: {
-      navigationBarTitleText: 'test'
-    }
-  },
-  {
     // path: 'pages/home',
     path: 'pages/message/chat_room',
     name: 'chat_room',
     config: {
-      navigationBarTitleText: '问诊中'
+      navigationBarTitleText: '问诊中',
+      usingComponents: {
+        'van-toast': '/static/vant/toast/index',
+        'van-popup': '/static/vant/popup/index',
+      }
     }
   }
 ]

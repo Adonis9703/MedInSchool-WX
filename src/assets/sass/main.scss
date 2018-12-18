@@ -46,6 +46,10 @@
   border-radius: 8rpx;
 }
 
+.van-popup {
+  border-radius: 10rpx!important;
+}
+
 body {
     @extend .font-size0;
     font-family: "PingFangSC-Regular", "microsoft yahei", "Arial"!important;
