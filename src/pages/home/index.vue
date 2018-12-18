@@ -5,22 +5,40 @@
     <button @click="setCache">缓存</button>
     <button @click="login">登录</button>
     <button @click="checkToken">Token</button>
+    <button @click="testSocket">socket</button>
     <van-button>van</van-button>
   </div>
 
 </template>
 
 <script>
+  var socket = null
   export default {
     //todo webSocket 连接 使用socket.io
     data() {
       return {
-        socketOpen: false
+        socketOpen: false,
+        socket: null
       }
     },
-    onShow() {
+    onLoad() {
+      socket = this.$socket('http://47.101.185.46:3000')
+      socket.emit('send', {
+        msg: '这里是客户端'
+      })
+      socket.on('get', data => {
+        console.log(data)
+      })
+    },
+    onUnload() {
+      // socket.close()
     },
     methods: {
+      testSocket() {
+        socket.emit('send', {
+          msg: '测试测试'
+        })
+      },
       checkToken() {
         this.$post({
           url: 'http://127.0.0.1:3000/checkToken'
