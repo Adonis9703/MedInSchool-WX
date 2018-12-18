@@ -18,14 +18,23 @@
 .z-index-1{
   z-index: -1;
 }
-
+.z-index1 {
+  z-index: 1;
+}
 .hidden {
   overflow: hidden;
 }
-
+.rotate180 {
+  transform: rotate(180deg);
+  transition: all .3s;
+}
+.rotate0 {
+  transform: rotate(0deg);
+  transition: all .3s;
+}
 .shadow {
   //noinspection CssInvalidPropertyValue
-  box-shadow: 0 0 12rpx 0 rgba(0,0,0,0.05);
+  box-shadow: 0 0 12rpx 0 rgba(0,0,0,0.06);
 }
 
 .btn-primary {

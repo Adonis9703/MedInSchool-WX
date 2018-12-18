@@ -4,7 +4,7 @@
       v-for="(item, index) of chatList"
       :key="index" :chat="item"
       @slide="onDelete(index)"
-      @push="goRoom(item)"
+      @push="goRoom(item.chatInfo)"
     ></chat-cell>
   </div>
 </template>
@@ -26,6 +26,7 @@
             status: '问诊中', //0 待接诊,1问诊中,2已完成
             complain: '脑壳疼',
             chatInfo: {
+              id: '1',
               user: 'Alex',
               message: '你好',
               time: '12:20'
@@ -36,6 +37,7 @@
             patient: '1232',
             complain: '脑壳疼',
             chatInfo: {
+              id: '2',
               user: 'Alex',
               message: '你好',
               time: '12:20'
@@ -47,7 +49,7 @@
     methods: {
       goRoom(item) {
         console.log(item)
-        this.$router.push({path:'/pages/message/chat_room'})
+        this.$router.push({path:'/pages/message/chat_room', query:{chatId: item.id}})
       },
       onDelete(i) {
         console.log(i)
