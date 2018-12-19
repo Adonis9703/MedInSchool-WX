@@ -58,8 +58,9 @@
       </div>
     </main>
     <footer class="fixed bottom0 width100 shadow">
-      <div class="bgcolor-white flex-align padding20X paddingX20">
+      <div class="bgcolor-white flex-align-spacebetween padding20X paddingX20">
         <input confirm-type="send"/>
+        <i class="icon-image-fill color-999 font-size18"></i>
       </div>
     </footer>
     <van-popup :show="showConfirm" :overlay="true" close-on-click-overlay>
@@ -187,7 +188,7 @@
     width: 2rpx;
   }
   input {
-    width: 560rpx;
+    width: 610rpx;
     display: inline-block;
     background-color: #f5f5f5;
     border-radius: 10rpx;

@@ -2,7 +2,7 @@
   <div class="">
     <img class="z-index-1 absolute block height100 width100" :src="background">
     <section class="relative top-60 paddingX36">
-      <div @click="goSetting" class="logo flex-align-justify ">
+      <div class="logo flex-align-justify ">
         <img :src="userInfo.logo ? userInfo.logo : defaultLogo"/>
       </div>
       <div class="card-panel paddingX20 padding20X">
@@ -102,7 +102,7 @@
     width: 172rpx;
     height: 172rpx;
     background-color: white;
-    border-radius: 85rpx;
+    border-radius: 50%;
     img {
       width: 162rpx;
       height: 162rpx;

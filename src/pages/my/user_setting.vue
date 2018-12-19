@@ -65,7 +65,7 @@
         </div>
       </section>
     </div>
-    <div class="btn-rpimary font-size4" style="margin-top: 40rpx">保 存 修 改</div>
+    <div class="btn-primary font-size4" style="margin-top: 40rpx">保 存 修 改</div>
   </div>
 </template>
 

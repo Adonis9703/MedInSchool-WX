@@ -1,7 +1,16 @@
 const homeRoutes = [
   {
-    path: '/pages/my/rp',
-    // path: 'pages/home',
+    path: 'pages/login',
+    name: 'login',
+    config: {
+      navigationBarTitleText: '浙科医务室',
+      navigationBarBackgroundColor: '#32AE57',
+      navigationBarTextStyle: 'white',
+      disableScroll: true
+    }
+  },
+  {
+    path: 'pages/home',
     name: 'home',
     config: {
       navigationBarTitleText: '主页',
@@ -54,8 +63,8 @@ const homeRoutes = [
     }
   },
   {
-    path: 'pages/home',
-    // path: '/pages/my/rp',
+    // path: 'pages/home',
+    path: '/pages/my/rp',
     name: 'rp',
     config: {
       navigationBarTitleText: '处方详情'
