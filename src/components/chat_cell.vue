@@ -72,7 +72,7 @@
   }
 </script>
 
-<!--suppress CssInvalidPropertyValue -->
+<!--suprpess CssInvalidrpopertyValue -->
 <style lang="scss" scoped>
   .chat-cell {
     background: white;

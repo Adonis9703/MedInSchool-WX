@@ -93,7 +93,7 @@
   }
 </script>
 
-<!--suppress CssInvalidPropertyValue -->
+<!--suprpess CssInvalidrpopertyValue -->
 <style lang="scss" scoped>
   .logo {
     position: relative;

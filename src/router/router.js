@@ -1,9 +1,7 @@
 const homeRoutes = [
   {
-    // path: 'pages/my/user_setting',
-    // path: 'pages/message',
-    // path: 'pages/message/chat_room',
-    path: 'pages/home',
+    path: '/pages/my/rp',
+    // path: 'pages/home',
     name: 'home',
     config: {
       navigationBarTitleText: '主页',
@@ -16,7 +14,6 @@ const homeRoutes = [
     }
   },
   {
-    // path: 'pages/home',
     path: 'pages/message',
     name: 'message',
     config: {
@@ -38,7 +35,6 @@ const homeRoutes = [
     }
   },
   {
-    // path: 'pages/home',
     path: 'pages/my/user_setting',
     name: 'user_setting',
     config: {
@@ -55,6 +51,14 @@ const homeRoutes = [
         'van-toast': '/static/vant/toast/index',
         'van-popup': '/static/vant/popup/index',
       }
+    }
+  },
+  {
+    path: 'pages/home',
+    // path: '/pages/my/rp',
+    name: 'rp',
+    config: {
+      navigationBarTitleText: '处方详情'
     }
   }
 ]

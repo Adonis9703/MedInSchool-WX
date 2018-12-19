@@ -30,23 +30,23 @@
       </div>
       <chat-pop v-for="(item, index) of chatInfo.chatList" :key="index" :content="item"></chat-pop>
       <div style="clear: both;"></div>
-      <div class="paddingX40">
+      <div class="paddingX40" @click="goRp">
         <div class="text-align-center padding20X color-999">医生已经开具处方</div>
-        <div class="pr">
+        <div class="rp" >
           <title class="flex-baseline-spacebetween paddingX26 padding-top26">
             <div class="flex-baseline">
               <div class="font-size4 margin-right20">{{chatInfo.patientName}} </div>
               <div class="color-666">{{chatInfo.patientSex}} {{chatInfo.patientAge}}</div>
             </div>
-            <div class="color-666">{{chatInfo.prTime}}</div>
+            <div class="color-666">{{chatInfo.rpTime}}</div>
           </title>
           <div class="color-999 margin16X paddingX26">诊断结果：{{chatInfo.diagnosis}}</div>
-            <div class="pr-detail" v-for="(item, index) of chatInfo.pr" :key="index">
+            <div class="rp-detail" v-for="(item, index) of chatInfo.rp" :key="index">
               <div class="flex-align-spacebetween color-333">
                 <div style="max-width: 500rpx;">{{item.name}}</div>
                 <div>{{item.amount}}{{item.amountUnit}}</div>
               </div>
-              <div class=" margin-top16 color-theme">
+              <div class=" margin-top16 color-666">
                 <i class="icon-tip-fill margin-right10 color-theme"></i>
                 <span>每次{{item.dosage}}{{item.dosageUnit}}</span>
                 <span>&ensp;{{item.method}} </span>
@@ -108,10 +108,10 @@
           complain: '脑壳疼',
           photos: [],
           status: '1',
-          prId: '123123',
-          prTime: '2018-01-01',
+          rpId: '123123',
+          rpTime: '2018-01-01',
           diagnosis: '吃饱了撑的',
-          pr: [
+          rp: [
             {
               name: '头孢克圬颗啊啊啊啊啊啊啊啊啊啊啊啊啊啊粒 50mg*6袋',
               amount: '2',
@@ -120,7 +120,8 @@
               dosageUnit: '毫克',
               timeState: '一天3次',
               day:'5',
-              method: '口服'
+              method: '口服',
+              price: '2'
             },
             {
               name: '头孢克圬颗粒 50mg*6袋',
@@ -164,9 +165,12 @@
             },
           ]
         },
-        methods: {
-
-        }
+      }
+    },
+    methods: {
+        goRp() {
+          console.log(123123)
+          this.$router.push({path: '/pages/my/rp'})
       }
     },
     onShow() {
@@ -217,12 +221,12 @@
     background-color: red;
     color: white;
   }
-  .pr {
+  .rp {
     background-color: white;
     border: #CDCDCD solid 2rpx;
     border-radius: 4rpx;
   }
-  .pr-detail {
+  .rp-detail {
     background-color: #fcfcfc;
     padding: 20rpx;
     border-bottom: #CDCDCD dashed 2rpx;

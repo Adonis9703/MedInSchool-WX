@@ -11,8 +11,12 @@
       <section class="paddingX20 font-size2">
         <div class="flex-align margin20X">
           <span class="title">性别</span>
-          <div class="btn-light margin-right26">♂</div>
-          <div class="btn-dark">♀</div>
+          <div class=" border-left"
+               :class="{'btn-light': userInfo.sex==='男', 'btn-dark': userInfo.sex!=='男'}"
+               @click="selectedSex('男')">♂</div>
+          <div class=" border-right"
+               :class="{'btn-light': userInfo.sex==='女', 'btn-dark': userInfo.sex!=='女'}"
+               @click="selectedSex('女')">♀</div>
         </div>
         <div class="flex-align margin20X">
           <span class="title" >姓名</span>
@@ -36,12 +40,16 @@
       </div>
       <section class="paddingX20 font-size2">
         <div class="flex-align margin20X">
-          <span class="title80">血型</span>
-          <div class="btn-light margin-right26">A</div>
-          <div class="btn-dark margin-right26">B</div>
-          <div class="btn-dark margin-right26">O</div>
-          <div class="btn-dark margin-right26" style="padding: 6rpx 18rpx">AB</div>
-          <div class="btn-dark" style="padding: 6rpx 18rpx">未知</div>
+          <span class="title">血型</span>
+          <div @click="selectedBlood(index)" v-for="(item, index) of bloodTypes" :key="index"
+               :class="{'btn-light': item.selected, 'btn-dark': !item.selected, 'border-left': index===0,'border-right': index===4}" >
+            {{item.type}}
+          </div>
+          <!--<div class="btn-light margin-right26">A</div>-->
+          <!--<div class="btn-dark margin-right26">B</div>-->
+          <!--<div class="btn-dark margin-right26">O</div>-->
+          <!--<div class="btn-dark margin-right26" style="padding: 6rpx 18rpx">AB</div>-->
+          <!--<div class="btn-dark" style="padding: 6rpx 18rpx">未知</div>-->
         </div>
         <div class="flex-align margin20X">
           <span class="title" >年龄</span>
@@ -57,7 +65,7 @@
         </div>
       </section>
     </div>
-    <div class="btn-primary font-size4" style="margin-top: 40rpx">保 存 修 改</div>
+    <div class="btn-rpimary font-size4" style="margin-top: 40rpx">保 存 修 改</div>
   </div>
 </template>
 
@@ -79,7 +87,44 @@
           age: '21',
           allergy: '傻子过敏',
           others: '暂无'
+        },
+        bloodTypes: [
+          {
+            type: 'A',
+            selected: false
+          },
+          {
+            type: 'B',
+            selected: false
+          },
+          {
+            type: 'O',
+            selected: false
+          },
+          {
+            type: 'AB',
+            selected: false
+          }, {
+            type: '未知',
+            selected: false
+          },
+
+        ]
+      }
+    },
+    methods: {
+      selectedSex(val) {
+        if (val === '男') {
+          this.userInfo.sex = '男'
+        } else {
+          this.userInfo.sex = '女'
         }
+      },
+      selectedBlood(val) {
+        this.bloodTypes.forEach(item => {
+          item.selected = false
+        })
+        this.bloodTypes[val].selected = true
       }
     }
   }
@@ -125,15 +170,20 @@
     display: inline-block;
     background-color: #32AE57;
     color: white;
-    border-radius: 10rpx;
     padding: 6rpx 26rpx;
   }
-
+  .border-left {
+    border-bottom-left-radius: 10rpx;
+    border-top-left-radius: 10rpx;
+  }
+  .border-right {
+    border-bottom-right-radius: 10rpx;
+    border-top-right-radius: 10rpx;
+  }
   .btn-dark {
     display: inline-block;
     background-color: #f5f5f5;
     color: #32AE57;
-    border-radius: 10rpx;
     padding: 6rpx 26rpx;
   }
 
