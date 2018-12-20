@@ -7,14 +7,29 @@
           <img :src="logo"/>
         </div>
       </section>
-      <div class="color-white text-align-center font-size6"  style="padding: 0 160rpx">
+      <div :class="{'fadeIn': pageType === 0, 'fadeOut': pageType !== 0}" class="color-white text-align-center font-size6 width100 border-box"  style="padding: 0 160rpx">
         <input v-model="loginInfo.id" type="number" :class="{'bold': loginInfo.id !==''}" placeholder="学号"/>
         <input v-model="loginInfo.password" placeholder="密码" type="password" class="margin-top20"/>
         <div class="margin-top40 bold" @click="doLogin">登录</div>
       </div>
-      <section class="flex-align-spacebetween paddingX100 color-ddd margin-top100">
-        <div>学号注册</div>
-        <div>忘记密码</div>
+      <div :class="{'fadeIn': pageType === 1, 'fadeOut': pageType !== 1}" class="color-white text-align-center font-size6 width100 border-box"  style="padding: 0 160rpx">
+        <input v-model="registerInfo.id" type="number" :class="{'bold': loginInfo.id !==''}" placeholder="学号"/>
+        <input v-model="registerInfo.password" placeholder="密码" type="password" class="margin-top20"/>
+        <input v-model="registerInfo.tel" placeholder="手机号"  type="number" class="margin-top20"/>
+        <input v-model="registerInfo.msgCode" placeholder="验证码" type="number" class="margin-top20"/>
+        <div class="margin-top40 bold" @click="">注册</div>
+      </div>
+      <div :class="{'fadeIn': pageType === 2, 'fadeOut': pageType !== 2}" class="color-white text-align-center font-size6 width100 border-box"  style="padding: 0 160rpx">
+        <input v-model="restInfo.id" type="number" :class="{'bold': loginInfo.id !==''}" placeholder="学号"/>
+        <input v-model="restInfo.tel"  placeholder="手机号" type="number" class="margin-top20"/>
+        <input v-model="restInfo.msgCode" placeholder="验证码" type="number" class="margin-top20"/>
+        <input v-model="restInfo.password" placeholder="新密码" type="password"  class="margin-top20"/>
+        <div class="margin-top40 bold" @click="">重置</div>
+      </div>
+      <section class="flex-align-spacebetween paddingX100 absolute width100 border-box bottom100 color-ddd">
+        <div v-if="pageType===1 || pageType===2" @click="pageType=0" class="color-white">用户登录</div>
+        <div v-if="pageType===0 || pageType === 2" @click="pageType=1">用户注册</div>
+        <div v-if="pageType===1 || pageType === 0" @click="pageType=2">忘记密码</div>
       </section>
     </main>
   </div>
@@ -35,6 +50,19 @@
         loginInfo: {
           id:'',
           password:''
+        },
+        registerInfo: {
+          id: '',
+          password: '',
+          tel: '',
+          msgCode: '',
+          //todo 用户注册后跳转至个人信息页将信息补充完整
+        },
+        restInfo: {
+          id:'',
+          tel: '',
+          msgCode: '',
+          newPassword: ''
         }
       }
     },
@@ -43,8 +71,7 @@
     },
     methods: {
       doLogin() {
-        // this.isTransition = !this.isTransition
-        // this.$router.push({path: '/pages/home', isTab: true})
+        this.$router.push({path: '/pages/home', isTab: true})
       }
     }
   }
@@ -78,5 +105,19 @@
     width: 100%;
     height: 100%;
     transition: all 15s;
+  }
+  .fadeIn {
+    position: absolute;
+    transform: translateY(0);
+    visibility: visible;
+    opacity: 1;
+    transition: all .6s;
+  }
+  .fadeOut {
+    position: absolute;
+    transform: translateY(30px);
+    opacity: 0;
+    visibility: hidden;
+    transition: all .2s;
   }
 </style>

@@ -31,7 +31,7 @@
       })
     },
     onUnload() {
-      // socket.close()
+      socket.disconnect()
     },
     methods: {
       testSocket() {

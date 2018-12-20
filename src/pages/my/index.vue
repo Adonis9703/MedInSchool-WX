@@ -71,7 +71,7 @@
           },
           {
             icon: 'icon-feedback',
-            title: '意见反馈',
+            title: '退出登录',
             border: false
           }
         ]
@@ -86,7 +86,7 @@
           this.$router.push({path: '/pages/my/user_setting'})
         }
         if (index === 2) {
-          this.$router.push({path: '/pages/my/user_setting'})
+          this.$router.push({path: '/pages/login', reLaunch: true})
         }
       }
     }

@@ -11,11 +11,9 @@
       <section class="paddingX20 font-size2">
         <div class="flex-align margin20X">
           <span class="title">性别</span>
-          <div class=" border-left"
-               :class="{'btn-light': userInfo.sex==='男', 'btn-dark': userInfo.sex!=='男'}"
+          <div class=" border-left" :class="{'btn-light': userInfo.sex==='男', 'btn-dark': userInfo.sex!=='男'}"
                @click="selectedSex('男')">♂</div>
-          <div class=" border-right"
-               :class="{'btn-light': userInfo.sex==='女', 'btn-dark': userInfo.sex!=='女'}"
+          <div class=" border-right" :class="{'btn-light': userInfo.sex==='女', 'btn-dark': userInfo.sex!=='女'}"
                @click="selectedSex('女')">♀</div>
         </div>
         <div class="flex-align margin20X">
@@ -24,11 +22,11 @@
         </div>
         <div class="flex-align margin20X">
           <span class="title" >学号</span>
-          <input v-model="userInfo.id"/>
+          <input type="number" v-model="userInfo.id"/>
         </div>
         <div class="flex-align margin20X">
           <span class="title">手机号</span>
-          <input  v-model="userInfo.tel"/>
+          <input type="number" v-model="userInfo.tel"/>
         </div>
       </section>
     </div>
@@ -45,15 +43,10 @@
                :class="{'btn-light': item.selected, 'btn-dark': !item.selected, 'border-left': index===0,'border-right': index===4}" >
             {{item.type}}
           </div>
-          <!--<div class="btn-light margin-right26">A</div>-->
-          <!--<div class="btn-dark margin-right26">B</div>-->
-          <!--<div class="btn-dark margin-right26">O</div>-->
-          <!--<div class="btn-dark margin-right26" style="padding: 6rpx 18rpx">AB</div>-->
-          <!--<div class="btn-dark" style="padding: 6rpx 18rpx">未知</div>-->
         </div>
         <div class="flex-align margin20X">
           <span class="title" >年龄</span>
-          <input v-model="userInfo.age"/>
+          <input type="number" v-model="userInfo.age"/>
         </div>
         <div class="flex-align margin20X">
           <span class="title" >过敏</span>
@@ -141,7 +134,7 @@
     display: inline-block;
     background-color: #f5f5f5;
     border-radius: 10rpx;
-    padding-left: 20rpx;
+    padding: 4rpx 20rpx;
     color: #666666;
   }
 
