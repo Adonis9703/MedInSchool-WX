@@ -59,6 +59,9 @@
   import zust from '~/logo/logo_zust.png'
     export default {
         name: "rp",
+      onLoad() {
+        Object.assign(this, this.$options.data())
+      },
       data() {
           return {
             zust,

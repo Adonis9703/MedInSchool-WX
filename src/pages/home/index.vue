@@ -1,12 +1,12 @@
 <template>
-  <div class="a">首页
-    <div class="margin-top100">socket 测试</div>
+  <div class="a">
     <button @click="post">post</button>
-    <button @click="setCache">缓存</button>
-    <button @click="login">登录</button>
-    <button @click="checkToken">Token</button>
+    <!--<button @click="setCache">缓存</button>-->
+    <!--<button @click="login">登录</button>-->
+    <!--<button @click="checkToken">Token</button>-->
     <button @click="testSocket">socket</button>
-    <van-button>van</van-button>
+    <button @click="select">去问诊</button>
+    <button @click="popup">弹窗</button>
   </div>
 
 </template>
@@ -22,6 +22,7 @@
       }
     },
     onLoad() {
+      Object.assign(this, this.$options.data())
       socket = this.$socket('http://47.101.185.46:3000')
       socket.emit('send', {
         msg: '这里是客户端'
@@ -34,6 +35,22 @@
       socket.disconnect()
     },
     methods: {
+      popup() {
+        wx.showModal({
+          title: '提示',
+          content: '这是一个模态弹窗',
+          success(res) {
+            if (res.confirm) {
+              console.log('用户点击确定')
+            } else if (res.cancel) {
+              console.log('用户点击取消')
+            }
+          }
+        })
+      },
+      select() {
+        this.$router.push({path: '/pages/home/select_doctor'})
+      },
       testSocket() {
         socket.emit('send', {
           msg: '测试测试'

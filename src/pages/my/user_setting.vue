@@ -67,6 +67,9 @@
   import logo from '~/default/user_heading.png'
   export default {
     name: "user_setting",
+    onLoad() {
+      Object.assign(this, this.$options.data())
+    },
     data() {
       return {
         zust,

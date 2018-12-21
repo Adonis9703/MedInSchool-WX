@@ -83,12 +83,22 @@
       chatPop,
     },
     name: "chat_room",
+    onLoad() {
+      Object.assign(this, this.$options.data())
+      setTimeout(() => {
+        this.showDetail = false
+      },1600)
+    },
+    onShow() {
+      // this.chatId = this.$route.query.chatId
+      // console.log(this.chatInfo)
+    },
     data() {
       return {
         doctor,
         patient,
         showConfirm: false,
-        showDetail: false,
+        showDetail: true,
         chatId: null,
         doctorInfo: {
           photo: '',
@@ -174,10 +184,6 @@
           this.$router.push({path: '/pages/my/rp'})
       }
     },
-    onShow() {
-      // this.chatId = this.$route.query.chatId
-      // console.log(this.chatInfo)
-    }
   }
 </script>
 <style lang="scss" scoped>

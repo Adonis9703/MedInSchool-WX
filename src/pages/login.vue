@@ -1,6 +1,7 @@
 <template>
   <div class="height100">
-    <img @click="isTransition= !isTransition" :src="back" class="absolute z-index-1" :class="{'transform':!isTransition, 'transform0': isTransition}">
+    <img @click="isTransition= !isTransition" :src="back" class="absolute z-index-1"
+         :class="{'transform':!isTransition, 'transform0': isTransition}">
     <main>
       <section class="flex-justify">
         <div class="logo flex-align-justify ">
@@ -45,7 +46,7 @@
       return {
         back,
         logo,
-        pageType: 0, //0登录 //1注册 //2忘记密码
+        pageType: null, //0登录 //1注册 //2忘记密码
         isTransition: false,
         loginInfo: {
           id:'',
@@ -66,8 +67,14 @@
         }
       }
     },
+    onLoad() {
+      Object.assign(this, this.$options.data())
+    },
     onShow() {
       this.isTransition = !this.isTransition
+      setTimeout(()=> {
+        this.pageType=0
+      },300)
     },
     methods: {
       doLogin() {

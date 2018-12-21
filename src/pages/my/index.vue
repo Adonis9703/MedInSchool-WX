@@ -48,6 +48,9 @@
   export default {
     name: "index",
     components: {settingCell},
+    onLoad() {
+      Object.assign(this, this.$options.data())
+    },
     data() {
       return {
         background,
@@ -80,7 +83,7 @@
     methods: {
       routerPush(index) {
         if (index === 0) {
-          this.$router.push({path: '/pages/my/user_setting'})
+          this.$router.push({path: '/pages/my/history'})
         }
         if (index === 1) {
           this.$router.push({path: '/pages/my/user_setting'})

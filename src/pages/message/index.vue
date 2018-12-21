@@ -17,6 +17,9 @@
       chatCell
     },
     name: "消息",
+    onLoad() {
+      Object.assign(this, this.$options.data())
+    },
     data() {
       return {
         chatList: [
