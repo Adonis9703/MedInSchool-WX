@@ -72,6 +72,7 @@
     },
     onShow() {
       this.isTransition = !this.isTransition
+      // this.pageType=0
       setTimeout(()=> {
         this.pageType=0
       },300)

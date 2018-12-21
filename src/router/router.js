@@ -2,8 +2,8 @@ const homeRoutes = [
   {
     // path: 'pages/home/select_doctor',
     // path: 'pages/home/fill_info',
-    path: 'pages/my/history',
-    // path: 'pages/home',
+    // path: 'pages/my/history',
+    path: 'pages/home',
     name: 'home',
     config: {
       navigationBarTitleText: '主页',
@@ -87,8 +87,8 @@ const homeRoutes = [
     }
   },
   {
-    path: 'pages/home',
-    // path: 'pages/my/history',
+    // path: 'pages/home',
+    path: 'pages/my/history',
     name: 'history',
     config: {
       enablePullDownRefresh: true,
