@@ -1,5 +1,15 @@
 const homeRoutes = [
   {
+    path: 'pages/login',
+    name: 'login',
+    config: {
+      navigationBarTitleText: '浙科医务室',
+      navigationBarBackgroundColor: '#32AE57',
+      navigationBarTextStyle: 'white',
+      disableScroll: true
+    }
+  },
+  {
     // path: 'pages/home/select_doctor',
     // path: 'pages/home/fill_info',
     // path: 'pages/my/history',
@@ -12,16 +22,6 @@ const homeRoutes = [
         'van-toast': '/static/vant/toast/index',
         'van-popup': '/static/vant/popup/index',
       }
-    }
-  },
-  {
-    path: 'pages/login',
-    name: 'login',
-    config: {
-      navigationBarTitleText: '浙科医务室',
-      navigationBarBackgroundColor: '#32AE57',
-      navigationBarTextStyle: 'white',
-      disableScroll: true
     }
   },
   {
