@@ -1,12 +1,10 @@
 <template>
   <div class="a">
     <button @click="post">post</button>
-    <!--<button @click="setCache">缓存</button>-->
-    <!--<button @click="login">登录</button>-->
-    <!--<button @click="checkToken">Token</button>-->
     <button @click="testSocket">socket</button>
     <button @click="select">去问诊</button>
     <button @click="popup">弹窗</button>
+    <button @click="loginSocket">login Socket</button>
   </div>
 
 </template>
@@ -23,7 +21,16 @@
     },
     onLoad() {
       Object.assign(this, this.$options.data())
-      socket = this.$socket('http://47.101.185.46:3000')
+      if (!this.$store.state.userInfo) {
+        this.$router.push({path: '/pages/login', reLaunch: true})
+        return
+      }
+      if (this.$store.state.userInfo && !this.$store.state.userInfo.name) {
+        this.$widget.alert('请将个人信息补充完整', () => {
+          this.$router.push({path: '/pages/my/user_setting'})
+        })
+      }
+      socket = this.$socket('http://127.0.0.1:3000')
       socket.emit('send', {
         msg: '这里是客户端'
       })
@@ -32,9 +39,16 @@
       })
     },
     onUnload() {
-      socket.disconnect()
+      if (socket) {
+        socket.disconnect()
+      }
     },
     methods: {
+      loginSocket() {
+        socket.emit('login', {
+          userId: '5150510116'
+        })
+      },
       popup() {
         wx.showModal({
           title: '提示',
@@ -81,7 +95,7 @@
       },
       post() {
         this.$post({
-          url: 'http://47.101.185.46:3000/hello',
+          url: this.$api.test,
           param: {
             name: 'alex'
           }

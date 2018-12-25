@@ -118,7 +118,7 @@
 }
 
 .van-button--disabled {
-    color: #ccc;
+    color: #999;
     background-color: #e8e8e8 !important;
     border: 1px solid #eee
 }

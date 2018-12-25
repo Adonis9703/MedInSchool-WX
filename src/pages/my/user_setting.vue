@@ -12,17 +12,19 @@
         <div class="flex-align margin20X">
           <span class="title">性别</span>
           <div class=" border-left" :class="{'btn-light': userInfo.sex==='男', 'btn-dark': userInfo.sex!=='男'}"
-               @click="selectedSex('男')">♂</div>
+               @click="selectedSex('男')">♂
+          </div>
           <div class=" border-right" :class="{'btn-light': userInfo.sex==='女', 'btn-dark': userInfo.sex!=='女'}"
-               @click="selectedSex('女')">♀</div>
+               @click="selectedSex('女')">♀
+          </div>
         </div>
         <div class="flex-align margin20X">
-          <span class="title" >姓名</span>
+          <span class="title">姓名</span>
           <input v-model="userInfo.name"/>
         </div>
         <div class="flex-align margin20X">
-          <span class="title" >学号</span>
-          <input type="number" v-model="userInfo.id"/>
+          <span class="title">学号</span>
+          <input type="number" v-model="userInfo.userId"/>
         </div>
         <div class="flex-align margin20X">
           <span class="title">手机号</span>
@@ -40,31 +42,33 @@
         <div class="flex-align margin20X">
           <span class="title">血型</span>
           <div @click="selectedBlood(index)" v-for="(item, index) of bloodTypes" :key="index"
-               :class="{'btn-light': item.selected, 'btn-dark': !item.selected, 'border-left': index===0,'border-right': index===4}" >
+               :class="{'btn-light': item.selected, 'btn-dark': !item.selected, 'border-left': index===0,'border-right': index===4}">
             {{item.type}}
           </div>
         </div>
         <div class="flex-align margin20X">
-          <span class="title" >年龄</span>
+          <span class="title">年龄</span>
           <input type="number" v-model="userInfo.age"/>
         </div>
         <div class="flex-align margin20X">
-          <span class="title" >过敏</span>
+          <span class="title">过敏</span>
           <input v-model="userInfo.allergy"/>
         </div>
         <div class="flex-align margin20X">
           <span class="title">其他</span>
-          <input  v-model="userInfo.others"/>
+          <input v-model="userInfo.other"/>
         </div>
       </section>
     </div>
-    <div class="btn-primary font-size4" style="margin-top: 40rpx">保 存 修 改</div>
+    <van-toast id="van-toast"/>
+    <div class="btn-primary font-size4" style="margin-top: 40rpx" @click="doUpdate">保 存 修 改</div>
   </div>
 </template>
 
 <script>
   import zust from '~/logo/logo_zust.png'
   import logo from '~/default/user_heading.png'
+
   export default {
     name: "user_setting",
     onLoad() {
@@ -74,16 +78,7 @@
       return {
         zust,
         logo,
-        userInfo: {
-          name: 'Alex',
-          sex: '男',
-          id: '5150510116',
-          tel: '15869106432',
-          bloodType: 'A',
-          age: '21',
-          allergy: '傻子过敏',
-          others: '暂无'
-        },
+        userInfo: {},
         bloodTypes: [
           {
             type: 'A',
@@ -108,6 +103,14 @@
         ]
       }
     },
+    onShow() {
+      this.userInfo = this.$store.state.userInfo
+      this.bloodTypes.forEach(item => {
+        if (item.type === this.userInfo.bloodType) {
+          item.selected = true
+        }
+      })
+    },
     methods: {
       selectedSex(val) {
         if (val === '男') {
@@ -121,6 +124,20 @@
           item.selected = false
         })
         this.bloodTypes[val].selected = true
+        this.userInfo.bloodType = this.bloodTypes[val].type
+      },
+      doUpdate() {
+        this.$post({
+          url: this.$api.updateUser,
+          param: this.userInfo
+        }).then(res => {
+            if (res.success) {
+              this.$store.commit('setUserInfo', this.userInfo)
+              this.$widget.toastSuccess('更新成功', () => {
+                this.$router.back()
+              })
+            }
+        })
       }
     }
   }
@@ -145,10 +162,12 @@
     min-width: 120rpx;
     display: inline-block;
   }
+
   .title80 {
     min-width: 80rpx;
     display: inline-block;
   }
+
   .logo {
     float: right;
     margin: 0 auto;
@@ -168,14 +187,17 @@
     color: white;
     padding: 6rpx 26rpx;
   }
+
   .border-left {
     border-bottom-left-radius: 10rpx;
     border-top-left-radius: 10rpx;
   }
+
   .border-right {
     border-bottom-right-radius: 10rpx;
     border-top-right-radius: 10rpx;
   }
+
   .btn-dark {
     display: inline-block;
     background-color: #f5f5f5;

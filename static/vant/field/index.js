@@ -51,6 +51,10 @@ create({
     titleWidth: {
       type: String,
       value: '90px'
+    },
+    trim: {
+      type: Boolean,
+      value: false
     }
   },
 
@@ -97,6 +101,12 @@ create({
         focused: false,
         showClear: this.getShowClear({ focused: false })
       })
+      if (this.data.trim && this.data.value) {
+        let value = this.data.value.trim()
+        this.setData({
+          value
+        })
+      }
     },
 
     onClickIcon () {
