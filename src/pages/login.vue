@@ -109,11 +109,13 @@
       },
       doRegister() {
         this.$post({
+          isLoading: true,
           url: this.$api.register,
           param: {
             userId: this.registerInfo.id,
             password: this.registerInfo.password,
-            tel: this.registerInfo.tel
+            tel: this.registerInfo.tel,
+            userType: 0
           }
         }).then(res => {
           if (res.success) {

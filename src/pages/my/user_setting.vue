@@ -136,6 +136,8 @@
               this.$widget.toastSuccess('更新成功', () => {
                 this.$router.back()
               })
+            } else {
+              this.$widget.toastWarn(res.message)
             }
         })
       }

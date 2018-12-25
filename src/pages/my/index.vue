@@ -3,17 +3,17 @@
     <img class="z-index-1 absolute block height100 width100" :src="background">
     <section class="relative top-60 paddingX36">
       <div class="logo flex-align-justify ">
-        <img :src="userInfo.logo ? userInfo.logo : defaultLogo"/>
+        <img :src="defaultLogo"/>
       </div>
       <div class="card-panel paddingX20 padding20X">
         <div class="margin-top60 flex-align-spacearound">
           <div class="text-align-center padding-bottom30">
             <i class="inline-block icon-personal2-fill font-size20 color-theme"></i>
-            <div class="color-999 margin-top20">{{userInfo.id}}</div>
+            <div class="color-999 margin-top20">{{userInfo.userId}}</div>
           </div>
           <div class="text-align-center">
             <div class="font-size18 color-theme">{{userInfo.name}}</div>
-            <i class="icon-male margin-top16 font-size10 color-999"></i>
+            <i class="margin-top16 font-size10 color-999" :class="{'icon-male': userInfo.sex==='男', 'icon-female': userInfo.sex==='女'}"></i>
           </div>
           <div class="text-align-center padding-bottom30">
             <i class="inline-block icon-phone-fill font-size20 color-theme"></i>
@@ -51,16 +51,14 @@
     onLoad() {
       Object.assign(this, this.$options.data())
     },
+    onShow() {
+      this.userInfo = this.$store.state.userInfo
+    },
     data() {
       return {
         background,
         defaultLogo,
-        userInfo: {
-          name: 'Alex',
-          logo: '',
-          id: '5150510116',
-          tel: '15869106432'
-        },
+        userInfo: {},
         cellConfig: [
           {
             icon: 'icon-clock',
@@ -89,6 +87,8 @@
           this.$router.push({path: '/pages/my/user_setting'})
         }
         if (index === 2) {
+          this.$store.commit('setUserInfo', null)
+          this.$store.commit('setToken', null)
           this.$router.push({path: '/pages/login', reLaunch: true})
         }
       }

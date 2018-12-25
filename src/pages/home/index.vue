@@ -22,15 +22,18 @@
     onLoad() {
       Object.assign(this, this.$options.data())
       if (!this.$store.state.userInfo) {
-        this.$router.push({path: '/pages/login', reLaunch: true})
-        return
+        this.$widget.alert('请登陆', () => {
+          this.$router.push({path: '/pages/login', reLaunch: true})
+          return
+        })
       }
       if (this.$store.state.userInfo && !this.$store.state.userInfo.name) {
         this.$widget.alert('请将个人信息补充完整', () => {
           this.$router.push({path: '/pages/my/user_setting'})
         })
       }
-      socket = this.$socket('http://127.0.0.1:3000')
+      socket = this.$socket('http://47.101.185.46:3000')
+      // socket = this.$socket('http://127.0.0.1:3000')
       socket.emit('send', {
         msg: '这里是客户端'
       })
