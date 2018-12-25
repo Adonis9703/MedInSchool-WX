@@ -90,6 +90,7 @@
     methods: {
       doLogin() {
         this.$post({
+          isLoading: true,
           url: this.$api.login,
           param: {
             userId: this.loginInfo.id,
@@ -102,7 +103,7 @@
             this.$store.commit('setUserInfo', res.data)
             this.$router.push({path: '/pages/home', isTab: true})
           } else {
-            this.$widget.toast(res.message)
+            this.$widget.toastWarn(res.message)
           }
           // this.$router.push({path: '/pages/home', isTab: true})
         })

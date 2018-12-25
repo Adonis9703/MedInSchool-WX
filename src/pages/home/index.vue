@@ -32,8 +32,8 @@
           this.$router.push({path: '/pages/my/user_setting'})
         })
       }
-      socket = this.$socket('http://47.101.185.46:3000')
-      // socket = this.$socket('http://127.0.0.1:3000')
+      // socket = this.$socket('http://47.101.185.46:3000')
+      socket = this.$socket('http://127.0.0.1:3000')
       socket.emit('send', {
         msg: '这里是客户端'
       })
