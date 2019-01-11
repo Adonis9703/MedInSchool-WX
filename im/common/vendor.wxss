@@ -1,0 +1,148 @@
+.icon-personal-fill:before {
+    content: "\E602";
+}
+
+.icon-enter:before {
+    content: "\E607";
+}
+
+.icon-arrow:before {
+    content: "\E60A";
+}
+
+.icon-home-fill:before {
+    content: "\E60D";
+}
+
+.icon-message-fill:before {
+    content: "\E60E";
+}
+
+.icon-edit:before {
+    content: "\E60C";
+}
+
+.icon-plus:before {
+    content: "\E60F";
+}
+
+.icon-search:before {
+    content: "\E610";
+}
+
+.icon-unfold:before {
+    content: "\E611";
+}
+
+.icon-phone-fill:before {
+    content: "\E612";
+}
+
+.icon-location-fill:before {
+    content: "\E613";
+}
+
+.icon-checked-fill:before {
+    content: "\E614";
+}
+
+.icon-location:before {
+    content: "\E615";
+}
+
+.icon-clock:before {
+    content: "\E616";
+}
+
+.icon-clock-fill:before {
+    content: "\E617";
+}
+
+.icon-fold:before {
+    content: "\E618";
+}
+
+.icon-checked:before {
+    content: "\E61A";
+}
+
+.icon-delete:before {
+    content: "\E61B";
+}
+
+.icon-tip-fill:before {
+    content: "\E61C";
+}
+
+.icon-dept-fill:before {
+    content: "\E619";
+}
+
+.icon-close:before {
+    content: "\E61D";
+}
+
+.icon-refresh:before {
+    content: "\E61E";
+}
+
+.icon-success-fill:before {
+    content: "\E624";
+}
+
+.icon-fail-fill:before {
+    content: "\E625";
+}
+
+.icon-male:before {
+    content: "\E61F";
+}
+
+.icon-female:before {
+    content: "\E620";
+}
+
+.icon-back:before {
+    content: "\E621";
+}
+
+.icon-modify:before {
+    content: "\E622";
+}
+
+.icon-wechat-pay-fill:before {
+    content: "\E623";
+}
+
+.icon-focus-location:before {
+    content: "\E626";
+}
+
+.icon-fold-fill:before {
+    content: "\E627";
+}
+
+.icon-unfold-fill:before {
+    content: "\E628";
+}
+
+.icon-dept:before {
+    content: "\E629";
+}
+
+.icon-phone2-fill:before {
+    content: "\E62A";
+}
+
+.icon-delete-order-fill:before {
+    content: "\E62B";
+}
+
+.icon-star-fill:before {
+    content: "\E62C";
+}
+
+.icon-image-fill:before {
+    content: "\E62D";
+}
+

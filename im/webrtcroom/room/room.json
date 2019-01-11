@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "TRTC",
+  "usingComponents": {
+    "webrtc-room": "/im/components/webrtc-room/webrtc-room"
+  }
+}

@@ -10,11 +10,11 @@ var relative = require('relative')
 // vue路由配置
 var MpvueEntry = require('mpvue-entry')
 
-function resolve (dir) {
+function resolve(dir) {
   return path.join(__dirname, '..', dir)
 }
 
-function getEntry (rootSrc) {
+function getEntry(rootSrc) {
   var map = {};
   glob.sync(rootSrc + '/pages/**/main.js')
     .forEach(file => {
@@ -70,7 +70,7 @@ module.exports = {
       },
       {
         test: /\.js$/,
-        include: [resolve('src'), resolve('test'), resolve('static/vant')],
+        include: [resolve('src'), resolve('test'), resolve('static/vant'), resolve('im')],
         use: [
           'babel-loader',
           {
@@ -120,6 +120,10 @@ module.exports = {
       {
         from: path.resolve(__dirname, '../static'),
         to: path.resolve(__dirname, '../dist/static'),
+        ignore: ['.*']
+      }, {
+        from: path.resolve(__dirname, '../im'),
+        to: path.resolve(__dirname, '../dist/im'),
         ignore: ['.*']
       }
     ])

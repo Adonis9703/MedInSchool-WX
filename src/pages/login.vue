@@ -40,6 +40,7 @@
         <div v-if="pageType===1 || pageType===2" @click="pageType=0" class="color-white">用户登录</div>
         <div v-if="pageType===0 || pageType === 2" @click="pageType=1">用户注册</div>
         <div v-if="pageType===1 || pageType === 0" @click="pageType=2">忘记密码</div>
+        <div @click="$router.push('/im/webrtcroom/room/room')">视频</div>
       </section>
     </main>
     <van-toast id="van-toast"/>
