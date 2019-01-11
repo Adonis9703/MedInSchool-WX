@@ -5,18 +5,57 @@
     <button @click="select">去问诊</button>
     <button @click="popup">弹窗</button>
     <button @click="loginSocket">login Socket</button>
+    <section class="padding20X paddingX20">
+      <div class="cell flex-align-spacebetween"
+           @click="goFillInfo"
+           v-for="(item, index) of doctorList" :key="index">
+        <div class="flex-align">
+          <img :src="doctor" class="block" style="width: 110rpx; height: 110rpx"/>
+          <div class="padding-left20 color-666">
+            <div class="margin-bottom16 font-size4 bold color-333">{{item.name}}</div>
+            <i class="icon-dept"></i>
+            <span class=""> {{item.department}}</span>
+            <span> · {{item.title}}</span>
+          </div>
+        </div>
+        <i class="icon-enter color-theme"></i>
+      </div>
+    </section>
   </div>
 
 </template>
 
 <script>
+  import doctor from '~/default/default_doctorhead.png'
+
   var socket = null
   export default {
     //todo webSocket 连接 使用socket.io
     data() {
       return {
         socketOpen: false,
-        socket: null
+        socket: null,
+        doctor,
+        doctorList: [
+          {
+            id: '1234',
+            name: '医生1',
+            title: '医师',
+            department: '外科',
+          },
+          {
+            id: '12345',
+            name: '医生2',
+            title: '护士',
+            department: '内科'
+          },
+          {
+            id: '32145',
+            name: '医生3',
+            title: '医师',
+            department: '科室'
+          },
+        ]
       }
     },
     onLoad() {
@@ -47,6 +86,9 @@
       }
     },
     methods: {
+      goFillInfo() {
+        this.$router.push({path: '/pages/home/fill_info'})
+      },
       loginSocket() {
         socket.emit('login', {
           userId: '5150510116'
@@ -115,5 +157,11 @@
     text-align: center;
     button {
     }
+  }
+  .cell {
+    background-color: #fff;
+    padding: 20rpx;
+    margin-top: 20rpx;
+    border-radius: 10rpx;
   }
 </style>
