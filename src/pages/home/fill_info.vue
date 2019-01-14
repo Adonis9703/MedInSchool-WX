@@ -2,7 +2,8 @@
   <main class="paddingX20 padding20X">
     <div class="card-panel shadow padding30X paddingX30">
       <textarea class="margin-bottom20" placeholder="准确描述病情有助于医生判断" v-model="describeInfo.text"></textarea>
-      <div class="inline-block color-theme bold padding6X border-radius font-size4 paddingX18 margin-right20 margin-top20"
+      <div
+        class="inline-block color-theme bold padding6X border-radius font-size4 paddingX18 margin-right20 margin-top20"
         :class="{'cell-light': item.selected, 'cell-dark': !item.selected}"
         v-for="(item, index) of desList" :key="index"
         @click="select(index)">
@@ -10,13 +11,13 @@
       </div>
       <div class="margin-top40 flex-align">
         <i class="theicon-freeupload" @click="upload"></i>
-        <div class="margin-left20 color-999"> 添加图片 </div>
+        <div class="margin-left20 color-999"> 添加图片</div>
       </div>
     </div>
     <div class="margin-top60">
       <div class="btn-primary font-size4 shadow" @click="goChat">发起问诊</div>
     </div>
-
+    <van-toast id="van-toast"/>
   </main>
 </template>
 
@@ -26,43 +27,67 @@
     onLoad() {
       Object.assign(this, this.$options.data())
     },
+    onShow() {
+      this.getDisease()
+      console.log(this.$route.query)
+    },
     data() {
       return {
         describeInfo: {
           text: '',
           photos: [],
         },
-        desList: [
-          {
-            name: '腹痛',
-            selected: false,
-          },
-          {
-            name: '脑壳疼',
-            selected: false,
-          },
-          {
-            name: '眩晕',
-            selected: false
-          },
-          {
-            name: '眩晕',
-            selected: false
-          },
-          {
-            name: '眩晕',
-            selected: false
-          },
-          {
-            name: '眩晕',
-            selected: false
-          },
-        ]
+        desList: []
       }
     },
     methods: {
-      goChat(){
-        this.$router.replace({path: '/pages/message/chat_room'})
+      getDisease() {
+        this.$post({
+          url: this.$api.getDiseaseList
+        }).then(res => {
+          let resTemp = []
+          res.data.forEach(item => {
+            item.selected = false
+            resTemp.push(item)
+          })
+          this.desList = resTemp
+        })
+      },
+      goChat() {
+        if (this.describeInfo.text === '') {
+          this.$widget.toastWarn('请填写病情描述')
+          return
+        }
+        let textTemp = '·'
+        this.desList.forEach(item => {
+          if (item.selected) {
+            textTemp = textTemp + item.name + '·'
+          }
+        })
+
+        let date = this.$date.formatWithPatternDate('yyyymmdd', new Date())
+        let time = new Date().toTimeString().substring(0, 8).replace(new RegExp(':', 'g'), '')
+        let patientId = this.$store.state.userInfo.userId
+        let doctorId = this.$route.query.id
+        console.log(date + time + patientId.substring(patientId.length - 4) + doctorId.substring(doctorId.length - 4))
+        this.$post({
+          url: this.$api.createChat,
+          param: {
+            chatId: date + time + patientId.substring(patientId.length - 4) + doctorId.substring(doctorId.length - 4),
+            doctorId: doctorId,
+            patientId: patientId,
+            chatStatus: 0,
+            complain: this.describeInfo.text,
+            chatTime: this.$date.format(new Date()),
+            doctorName: this.$route.query.name,
+            patientName: this.$store.state.userInfo.name
+          }
+        }).then(res => {
+          console.log(res)
+        })
+        // this.describeInfo.text = textTemp + this.describeInfo.text
+        // console.log(this.describeInfo.text)
+        // this.$router.replace({path: '/pages/message/chat_room'})
       },
       upload() {
         wx.chooseImage({

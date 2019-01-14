@@ -1,13 +1,11 @@
 <template>
   <div class="a">
-    <button @click="post">post</button>
     <button @click="testSocket">socket</button>
-    <button @click="select">去问诊</button>
     <button @click="popup">弹窗</button>
     <button @click="loginSocket">login Socket</button>
     <section class="padding20X paddingX20">
       <div class="cell flex-align-spacebetween"
-           @click="goFillInfo"
+           @click="goFillInfo(item)"
            v-for="(item, index) of doctorList" :key="index">
         <div class="flex-align">
           <img :src="doctor" class="block" style="width: 110rpx; height: 110rpx"/>
@@ -36,26 +34,7 @@
         socketOpen: false,
         socket: null,
         doctor,
-        doctorList: [
-          {
-            id: '1234',
-            name: '医生1',
-            title: '医师',
-            department: '外科',
-          },
-          {
-            id: '12345',
-            name: '医生2',
-            title: '护士',
-            department: '内科'
-          },
-          {
-            id: '32145',
-            name: '医生3',
-            title: '医师',
-            department: '科室'
-          },
-        ]
+        doctorList: []
       }
     },
     onLoad() {
@@ -80,14 +59,29 @@
         console.log(data)
       })
     },
+    onShow() {
+      this.getDoctorList()
+      console.log(this.$date.formatWithPatternDate('yyyymmdd', new Date()))
+    },
     onUnload() {
       if (socket) {
         socket.disconnect()
       }
     },
     methods: {
-      goFillInfo() {
-        this.$router.push({path: '/pages/home/fill_info'})
+      getDoctorList() {
+        this.$post({
+          url: this.$api.getDoctorList,
+          param: {
+            userType: 1
+          }
+        }).then(res => {
+          console.log(res)
+          this.doctorList = res.data
+        })
+      },
+      goFillInfo(item) {
+        this.$router.push({path: '/pages/home/fill_info', query: {id: item.userId, name: item.name}})
       },
       loginSocket() {
         socket.emit('login', {
@@ -115,13 +109,6 @@
           msg: '测试测试'
         })
       },
-      checkToken() {
-        this.$post({
-          url: 'http://127.0.0.1:3000/checkToken'
-        }).then(res => {
-          console.log(`token check `, res)
-        })
-      },
       login() {
         this.$post({
           url: this.$api.login,
@@ -137,16 +124,6 @@
       },
       setCache() {
         this.$cache.set('name', 'alex')
-      },
-      post() {
-        this.$post({
-          url: this.$api.test,
-          param: {
-            name: 'alex'
-          }
-        }).then(res => {
-          console.log(res)
-        })
       },
     }
   }

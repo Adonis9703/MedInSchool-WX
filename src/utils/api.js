@@ -6,6 +6,7 @@ export const api = {
   login: baseUrl + 'login', //登陆
   updateUser: baseUrl + 'update',   //更新个人信息
   getSocketInfo: baseUrl + 'getSocketByUserId',   //获取Socket 映射
-  test: baseUrl+ 'test',
-  getDoctorList: baseUrl+ 'getDoctorList'
+  getDoctorList: baseUrl + 'getUserByType',   //获取医生
+  getDiseaseList: baseUrl + 'getDiseases', //获取常见疾病
+  createChat: baseUrl + 'createChat', //新建问诊
 }
