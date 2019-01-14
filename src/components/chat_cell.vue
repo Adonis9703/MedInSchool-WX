@@ -10,12 +10,12 @@
             <img :src="doctor">
             <div class="margin-left20" style="width: 80%;">
               <div class="flex-align-spacebetween">
-                <title class="color-333 font-size8 bold">{{chat.doctor}}</title>
+                <title class="color-333 font-size8 bold">{{chat.doctorName}}</title>
                 <span class="dot margin-right12"></span>
               </div>
               <div class="color-666 margin-top10 flex-align-spacebetween">
-                <div> {{chat.chatInfo.user}}：{{chat.chatInfo.message}}</div>
-                <div class="padding-right12">{{chat.chatInfo.time}}</div>
+                <!--<div> {{chat.user}}：{{chat.message}}</div>-->
+                <div class="padding-right12">{{chat.chatTime}}</div>
               </div>
             </div>
           </main>
@@ -48,7 +48,6 @@
     methods: {
       onPush() {
         this.$emit('push')
-        console.log(11111111)
       },
       handleDelete() {
         this.$emit('slide')

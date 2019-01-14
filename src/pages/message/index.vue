@@ -4,7 +4,7 @@
       v-for="(item, index) of chatList"
       :key="index" :chat="item"
       @slide="onDelete(index)"
-      @push="goRoom(item.chatInfo)"
+      @push="goRoom(item)"
     ></chat-cell>
   </div>
 </template>
@@ -20,39 +20,28 @@
     onLoad() {
       Object.assign(this, this.$options.data())
     },
+    onShow() {
+      this.getMessage()
+    },
     data() {
       return {
-        chatList: [
-          {
-            doctor: '古力娜扎',
-            patient: 'Alex',
-            status: '问诊中', //0 待接诊,1问诊中,2已完成
-            complain: '脑壳疼',
-            chatInfo: {
-              id: '1',
-              user: 'Alex',
-              message: '你好',
-              time: '12:20'
-            }
-          },
-          {
-            doctor: 'WEQ',
-            patient: '1232',
-            complain: '脑壳疼',
-            chatInfo: {
-              id: '2',
-              user: 'Alex',
-              message: '你好',
-              time: '12:20'
-            }
-          }
-        ],
+        chatList: [],
       }
     },
     methods: {
+      getMessage() {
+        this.$post({
+          url: this.$api.getChatList,
+          param: {
+            patientId: this.$store.state.userInfo.userId
+          }
+        }).then(res=> {
+          this.chatList = res.data
+          console.log(res.data)
+        })
+      },
       goRoom(item) {
-        console.log(item)
-        this.$router.push({path:'/pages/message/chat_room', query:{chatId: item.id}})
+        this.$router.push({path:'/pages/message/chat_room', query:{chatId: item.chatId, doctorId: item.doctorId}})
       },
       onDelete(i) {
         console.log(i)

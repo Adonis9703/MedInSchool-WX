@@ -1,21 +1,22 @@
 <template>
   <div class="pop">
     <!--患者-->
-    <div v-if="content.originUserType==='1'" class="margin-top30 flex-baseline float-right">
-      <div class="color-gray padding-right20 font-size-4">{{content.time}}</div>
+    <div v-if="content.senderType == 1" class="flex-baseline float-right">
+      <div class="color-gray padding-right20 font-size-4">{{content.msgTime}}</div>
       <div class="msg bgcolor-theme color-white margin-right20 font-size4">
-        {{content.message}}
+        {{content.msgText}}
       </div>
       <img :src="patient" class="block margin-right20" style="width: 90rpx;height: 90rpx;"/>
     </div>
     <!--医生-->
-    <div v-else class="margin-top30 flex-baseline float-left">
+    <div v-else class="flex-baseline float-left">
       <img :src="doctor" class="block margin-left20" style="width: 90rpx;height: 90rpx;"/>
       <div class="msg bgcolor-white margin-left20 font-size4">
-        {{content.message}}
+        {{content.msgText}}
       </div>
-      <div class="color-gray padding-left20 font-size-4">{{content.time}}</div>
+      <div class="color-gray padding-left20 font-size-4">{{content.msgTime}}</div>
     </div>
+    <div style="clear:both"></div>
   </div>
 </template>
 
