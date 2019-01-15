@@ -92,8 +92,8 @@
       setTimeout(() => {
         this.showDetail = false
       }, 1600)
-      // socket = this.$socket('http://47.101.185.46:3000')
-      socket = this.$socket('http://127.0.0.1:3000')
+      socket = this.$socket('http://47.101.185.46:3000')
+      // socket = this.$socket('http://127.0.0.1:3000')
       socket.on('service2pat', data => {
         console.log(data)
         this.msgList.push(data)
