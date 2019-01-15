@@ -16,6 +16,7 @@ Vue.prototype.$store = store
 Vue.prototype.$api = api
 Vue.prototype.$widget = widget
 Vue.prototype.$date = date
+
 Vue.use(MpvueRouterPatch)
 
 App.mpType = 'app'

@@ -68,7 +68,6 @@
           password: '',
           tel: '',
           msgCode: '',
-          //todo 用户注册后跳转至个人信息页将信息补充完整
         },
         restInfo: {
           id: '',

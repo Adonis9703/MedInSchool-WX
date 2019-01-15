@@ -26,7 +26,6 @@
 <script>
   import doctor from '~/default/default_doctorhead.png'
 
-  var socket = null
   export default {
     //todo webSocket 连接 使用socket.io
     data() {
@@ -50,23 +49,13 @@
           this.$router.push({path: '/pages/my/user_setting'})
         })
       }
-      // socket = this.$socket('http://47.101.185.46:3000')
-      socket = this.$socket('http://127.0.0.1:3000')
-      socket.emit('send', {
-        msg: '这里是客户端'
-      })
-      socket.on('get', data => {
-        console.log(data)
-      })
+
     },
     onShow() {
       this.getDoctorList()
       console.log(this.$date.formatWithPatternDate('yyyymmdd', new Date()))
     },
     onUnload() {
-      if (socket) {
-        socket.disconnect()
-      }
     },
     methods: {
       getDoctorList() {

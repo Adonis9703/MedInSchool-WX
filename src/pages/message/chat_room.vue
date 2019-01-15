@@ -23,7 +23,7 @@
         <!--<img :src="doctor" class="block" style="width: 110rpx;height: 110rpx">-->
       </div>
       <div style="height: 150rpx;width: 2rpx"></div>
-      <div v-if="chatInfo.chatStatus==1" class="width100 text-align-center color-999 padding-top20">
+      <div v-if="chatInfo.chatStatus==0" class="width100 text-align-center color-999 padding-top20">
         问诊已经发起
         <div class="color-theme font-size4 margin-top10">请等待医生接诊！</div>
       </div>
@@ -58,8 +58,8 @@
     </main>
     <footer class="fixed bottom0 width100 shadow">
       <div class="bgcolor-white flex-align-spacebetween padding20X paddingX20">
-        <input confirm-type="send"/>
-        <i class="icon-image-fill color-999 font-size18"></i>
+        <input confirm-type="send" v-model.trim="text"/>
+        <i  @click="socketSend" class="icon-image-fill color-999 font-size18"></i>
       </div>
     </footer>
     <van-popup :show="showConfirm" :overlay="true" close-on-click-overlay>
@@ -70,6 +70,7 @@
         </div>
       </div>
     </van-popup>
+    <van-toast id="van-toast"/>
   </div>
 </template>
 
@@ -77,6 +78,9 @@
   import doctor from '~/default/default_doctorhead.png'
   import patient from '~/default/user_heading.png'
   import chatPop from '@/components/chat_pop'
+  // import {connect} from '@/utils/socket'
+
+  var socket = null
 
   export default {
     components: {
@@ -88,13 +92,28 @@
       setTimeout(() => {
         this.showDetail = false
       }, 1600)
+      // socket = this.$socket('http://47.101.185.46:3000')
+      socket = this.$socket('http://127.0.0.1:3000')
+      socket.on('service2pat', data => {
+        console.log(data)
+        this.msgList.push(data)
+      })
+      socket.on('historySaved', res=> {
+        this.text = ''
+      })
     },
     onShow() {
       this.getDocInfo()
       this.getChatInfo()
       this.getMsgHistory()
+      socket.emit('refresh', this.$store.state.userInfo)
       // this.chatId = this.$route.query.chatId
       // console.log(this.chatInfo)
+    },
+    onUnload() {
+      if (socket) {
+        socket.disconnect()
+      }
     },
     data() {
       return {
@@ -105,79 +124,29 @@
         chatId: null,
         doctorInfo: {},
         msgList: [],
+        text: '',
         //todo 进入页面时通过接口查询聊天记录并显示，实时聊天时不请求，只通过socket连接
         // 存到缓存中
-        chatInfo: {
-          chatId: '20181108140001120423',
-          doctorId: '123',
-          doctorName: '医生',
-          patientId: '1234',
-          patientName: '患者',
-          patientAge: '16',
-          patientSex: '男',
-          complain: '脑壳疼',
-          photos: [],
-          status: '1',
-          rpId: '123123',
-          rpTime: '2018-01-01',
-          diagnosis: '吃饱了撑的',
-          rp: [
-            {
-              name: '头孢克圬颗啊啊啊啊啊啊啊啊啊啊啊啊啊啊粒 50mg*6袋',
-              amount: '2',
-              amountUnit: '盒',
-              dosage: '30',
-              dosageUnit: '毫克',
-              timeState: '一天3次',
-              day: '5',
-              method: '口服',
-              price: '2'
-            },
-            {
-              name: '头孢克圬颗粒 50mg*6袋',
-              amount: '2',
-              amountUnit: '盒',
-              dosage: '30',
-              dosageUnit: '毫克',
-              timeState: '一天3次',
-              day: '5',
-              method: '口服'
-            },
-            {
-              name: '头孢克圬颗粒 50mg*6袋',
-              amount: '2',
-              amountUnit: '盒',
-              dosage: '30',
-              dosageUnit: '毫克',
-              timeState: '一天三次',
-              day: '5',
-              method: '口服'
-            },
-          ],
-          chatList: [
-            {
-              originUserId: '1',
-              originUserName: '来源',
-              targetUserId: '2',
-              targetUserName: '目标',
-              originUserType: '1', //0 医生，1 患者
-              time: '10:27',
-              message: '吃了哦吃了哦'
-            },
-            {
-              originUserId: '1',
-              originUserName: '来源',
-              targetUserId: '2',
-              targetUserName: '目标',
-              originUserType: '0', //0 医生，1 患者
-              time: '10:27',
-              message: '吃吗吃了吗吃了吃了吗吃了吗吃了吃了吗吃了吗吃了吗吃了吗吃了吗吃了吗吃了吗吃了吗吃了吗吃了吗'
-            },
-          ]
-        },
+        chatInfo: {},
       }
     },
     methods: {
+      socketSend() {
+        if (this.text === '') {
+          this.$widget.toast('消息不能为空哦')
+          return
+        }
+        let data = {
+          chatId: this.$route.query.chatId,
+          senderType: '0',
+          senderId: this.$store.state.userInfo.userId,
+          receiverId: this.$route.query.doctorId,
+          msgText: this.text,
+          msgTime: new Date().toTimeString().substring(0, 5),
+        }
+        this.msgList.push(data)
+        socket.emit('pat2service', data)
+      },
       getDocInfo() {
         this.$post({
           url: this.$api.getUserInfoById,
@@ -196,7 +165,6 @@
           }
         }).then(res => {
           this.chatInfo = res.data
-          console.log(res.data)
         })
       },
       getMsgHistory() {
@@ -210,7 +178,6 @@
         })
       },
       goRp() {
-        console.log(123123)
         this.$router.push({path: '/pages/my/rp'})
       }
     },

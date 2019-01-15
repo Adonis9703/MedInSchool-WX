@@ -69,11 +69,12 @@
         let time = new Date().toTimeString().substring(0, 8).replace(new RegExp(':', 'g'), '')
         let patientId = this.$store.state.userInfo.userId
         let doctorId = this.$route.query.id
-        console.log(date + time + patientId.substring(patientId.length - 4) + doctorId.substring(doctorId.length - 4))
+        let chatIdTemp = date + time + patientId.substring(patientId.length - 4) + doctorId.substring(doctorId.length - 4)
+        // console.log(date + time + patientId.substring(patientId.length - 4) + doctorId.substring(doctorId.length - 4))
         this.$post({
           url: this.$api.createChat,
           param: {
-            chatId: date + time + patientId.substring(patientId.length - 4) + doctorId.substring(doctorId.length - 4),
+            chatId: chatIdTemp,
             doctorId: doctorId,
             patientId: patientId,
             chatStatus: 0,
@@ -83,7 +84,9 @@
             patientName: this.$store.state.userInfo.name
           }
         }).then(res => {
-          console.log(res)
+          this.$widget.toastSuccess('问诊请求提交成功！', ()=>{
+            this.$router.replace({path: '/pages/message/chat_room', query:{chatId: chatIdTemp, doctorId: doctorId}})
+          })
         })
         // this.describeInfo.text = textTemp + this.describeInfo.text
         // console.log(this.describeInfo.text)

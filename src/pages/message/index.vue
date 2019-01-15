@@ -36,8 +36,7 @@
             patientId: this.$store.state.userInfo.userId
           }
         }).then(res=> {
-          this.chatList = res.data
-          console.log(res.data)
+          this.chatList = res.data.reverse()
         })
       },
       goRoom(item) {
