@@ -17,7 +17,7 @@
         </div>
       </div>
     </header>
-    <main style="padding-bottom: 130rpx">
+    <main style="padding-bottom: 130rpx" id="pop-height">
       <div class="detail" :class="{'showDetail': showDetail, 'hiddenDetail': !showDetail}">
         <div>主诉：{{chatInfo.complain}}</div>
         <!--<img :src="doctor" class="block" style="width: 110rpx;height: 110rpx">-->
@@ -59,7 +59,7 @@
     <footer class="fixed bottom0 width100 shadow">
       <div class="bgcolor-white flex-align-spacebetween padding20X paddingX20">
         <input confirm-type="send" v-model.trim="text"/>
-        <i  @click="socketSend" class="icon-image-fill color-999 font-size18"></i>
+        <i @click="socketSend" class="icon-image-fill color-999 font-size18"></i>
       </div>
     </footer>
     <van-popup :show="showConfirm" :overlay="true" close-on-click-overlay>
@@ -91,15 +91,27 @@
       Object.assign(this, this.$options.data())
       setTimeout(() => {
         this.showDetail = false
+        this.scroll()
       }, 1600)
-      socket = this.$socket('http://47.101.185.46:3000')
+      socket = this.$socket(this.$api.base)
       // socket = this.$socket('http://127.0.0.1:3000')
       socket.on('service2pat', data => {
         console.log(data)
         this.msgList.push(data)
       })
-      socket.on('historySaved', res=> {
+      socket.on('historySaved', res => {
         this.text = ''
+      })
+      socket.on('refreshChatStatus', () => {
+        console.log('刷新就诊状态')
+        this.getChatInfo()
+        if (this.chatInfo.chatStatus == 0) {
+          console.log('待接诊')
+        } else if (this.chatInfo.chatStatus == 1) {
+          console.log('问诊中')
+        } else {
+          console.log('问诊已结束')
+        }
       })
     },
     onShow() {
@@ -107,6 +119,12 @@
       this.getChatInfo()
       this.getMsgHistory()
       socket.emit('refresh', this.$store.state.userInfo)
+      if (this.$route.query.createNew){
+        console.log(`新增问诊`)
+        socket.emit('createChat', {
+          doctorId: this.$route.query.doctorId
+        })
+      }
       // this.chatId = this.$route.query.chatId
       // console.log(this.chatInfo)
     },
@@ -131,6 +149,18 @@
       }
     },
     methods: {
+      scroll() {
+        if (this.msgList.length !== 0) {
+          console.log(`滚动`)
+          wx.createSelectorQuery().select('#pop-height').boundingClientRect(function (rect) {
+            // 使页面滚动到底部
+            wx.pageScrollTo({
+              scrollTop: rect.bottom,
+              duration: 500
+            })
+          }).exec()
+        }
+      },
       socketSend() {
         if (this.text === '') {
           this.$widget.toast('消息不能为空哦')
@@ -165,6 +195,13 @@
           }
         }).then(res => {
           this.chatInfo = res.data
+          // if (res.data.chatStatus == 0) {
+          //
+          // } else if (res.data.chatStatus == 1) {
+          //
+          // } else {
+          //
+          // }
         })
       },
       getMsgHistory() {

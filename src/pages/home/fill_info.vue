@@ -85,7 +85,7 @@
           }
         }).then(res => {
           this.$widget.toastSuccess('问诊请求提交成功！', ()=>{
-            this.$router.replace({path: '/pages/message/chat_room', query:{chatId: chatIdTemp, doctorId: doctorId}})
+            this.$router.replace({path: '/pages/message/chat_room', query:{chatId: chatIdTemp, doctorId: doctorId, createNew: true}})
           })
         })
         // this.describeInfo.text = textTemp + this.describeInfo.text
