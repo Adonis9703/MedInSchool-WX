@@ -30,7 +30,7 @@
       <chat-pop v-for="(item, index) of msgList" :key="index" :content="item"></chat-pop>
       <div style="clear: both;"></div>
       <div class="paddingX40" @click="goRp">
-        <div class="text-align-center padding20X color-999">医生已经开具处方</div>
+        <!--<div class="text-align-center padding20X color-999">医生已经开具处方</div>-->
         <!--<div class="rp">-->
         <!--<title class="flex-baseline-spacebetween paddingX26 padding-top26">-->
         <!--<div class="flex-baseline">-->
@@ -59,7 +59,7 @@
     <footer class="fixed bottom0 width100 shadow">
       <div class="bgcolor-white flex-align-spacebetween padding20X paddingX20">
         <input confirm-type="send" v-model.trim="text"/>
-        <i @click="socketSend" class="icon-image-fill color-999 font-size18"></i>
+        <i @click="socketSend" class="icon-edit color-999 font-size18"></i>
       </div>
     </footer>
     <van-popup :show="showConfirm" :overlay="true" close-on-click-overlay>
@@ -108,6 +108,7 @@
         if (this.chatInfo.chatStatus == 0) {
           console.log('待接诊')
         } else if (this.chatInfo.chatStatus == 1) {
+          this.$widget.toastSuccess('医生已接诊')
           console.log('问诊中')
         } else {
           console.log('问诊已结束')

@@ -1,8 +1,8 @@
 <template>
   <div class="a">
-    <button @click="testSocket">socket</button>
-    <button @click="popup">弹窗</button>
-    <button @click="loginSocket">login Socket</button>
+    <!--<button @click="testSocket">socket</button>-->
+    <!--<button @click="popup">弹窗</button>-->
+    <!--<button @click="loginSocket">login Socket</button>-->
     <section class="padding20X paddingX20">
       <div class="cell flex-align-spacebetween"
            @click="goFillInfo(item)"
