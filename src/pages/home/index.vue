@@ -1,8 +1,5 @@
 <template>
   <div class="a">
-    <!--<button @click="testSocket">socket</button>-->
-    <!--<button @click="popup">弹窗</button>-->
-    <!--<button @click="loginSocket">login Socket</button>-->
     <section class="padding20X paddingX20">
       <div class="cell flex-align-spacebetween"
            @click="goFillInfo(item)"
@@ -27,7 +24,6 @@
   import doctor from '~/default/default_doctorhead.png'
 
   export default {
-    //todo webSocket 连接 使用socket.io
     data() {
       return {
         socketOpen: false,
@@ -41,7 +37,6 @@
       if (!this.$store.state.userInfo) {
         this.$widget.alert('请登陆', () => {
           this.$router.push({path: '/pages/login', reLaunch: true})
-          return
         })
       }
       if (this.$store.state.userInfo && !this.$store.state.userInfo.name) {
@@ -62,7 +57,8 @@
         this.$post({
           url: this.$api.getDoctorList,
           param: {
-            userType: 1
+            userType: 1,
+            isOnline: 1
           }
         }).then(res => {
           console.log(res)
@@ -72,31 +68,8 @@
       goFillInfo(item) {
         this.$router.push({path: '/pages/home/fill_info', query: {id: item.userId, name: item.name}})
       },
-      loginSocket() {
-        socket.emit('login', {
-          userId: '5150510116'
-        })
-      },
-      popup() {
-        wx.showModal({
-          title: '提示',
-          content: '这是一个模态弹窗',
-          success(res) {
-            if (res.confirm) {
-              console.log('用户点击确定')
-            } else if (res.cancel) {
-              console.log('用户点击取消')
-            }
-          }
-        })
-      },
       select() {
         this.$router.push({path: '/pages/home/select_doctor'})
-      },
-      testSocket() {
-        socket.emit('send', {
-          msg: '测试测试'
-        })
       },
       login() {
         this.$post({
@@ -121,8 +94,6 @@
 <style lang="scss" scoped>
   .a {
     text-align: center;
-    button {
-    }
   }
   .cell {
     background-color: #fff;
