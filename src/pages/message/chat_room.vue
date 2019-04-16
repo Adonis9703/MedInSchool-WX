@@ -20,7 +20,7 @@
     <main style="padding-bottom: 130rpx" id="pop-height">
       <div class="detail" :class="{'showDetail': showDetail, 'hiddenDetail': !showDetail}">
         <div>主诉：{{chatInfo.complain}}</div>
-        <!--<img :src="doctor" class="block" style="width: 110rpx;height: 110rpx">-->
+        <img v-for="(item, index) in chatInfo.complainImgs" :key="index" :src="baseUrl+item" class="inline-block" style="width: 110rpx;height: 110rpx">
       </div>
       <div style="height: 150rpx;width: 2rpx"></div>
       <div v-if="chatInfo.chatStatus==0" class="width100 text-align-center color-999 padding-top20">
@@ -147,6 +147,7 @@
         //todo 进入页面时通过接口查询聊天记录并显示，实时聊天时不请求，只通过socket连接
         // 存到缓存中
         chatInfo: {},
+        baseUrl: this.$api.base
       }
     },
     methods: {
@@ -196,6 +197,8 @@
           }
         }).then(res => {
           this.chatInfo = res.data
+          this.chatInfo.complainImgs = this.chatInfo.complainImgs.split(',')
+          console.log('主诉图片', this.chatInfo.complainImgs)
           // if (res.data.chatStatus == 0) {
           //
           // } else if (res.data.chatStatus == 1) {

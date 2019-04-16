@@ -13,5 +13,6 @@ export const api = {
   createChat: baseUrl + 'createChat', //新建问诊
   getChatList: baseUrl + 'getChatListByPatientId', //获取问诊列表
   getMsgHistory: baseUrl + 'getMsgHistory',  //问诊消息历史
-  getChatInfoByChatId: baseUrl + 'getChatInfoByChatId' //获取问诊详情
+  getChatInfoByChatId: baseUrl + 'getChatInfoByChatId', //获取问诊详情,
+  uploadImg: baseUrl + 'uploadImg',  //上传图片
 }

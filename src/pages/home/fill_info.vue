@@ -13,6 +13,11 @@
         <i class="theicon-freeupload" @click="upload"></i>
         <div class="margin-left20 color-999"> 添加图片</div>
       </div>
+      <div class="inline-block image-wrap" v-for="(item, index) in tempFilePaths" :key="index">
+        <img :src="item">
+      </div>
+    </div>
+    <div>
     </div>
     <div class="margin-top60">
       <div class="btn-primary font-size4 shadow" @click="goChat">发起问诊</div>
@@ -30,6 +35,12 @@
     onShow() {
       this.getDisease()
       console.log(this.$route.query)
+
+      let patientId = this.$store.state.userInfo.userId
+      let doctorId = this.$route.query.id
+      let date = this.$date.formatWithPatternDate('yyyymmdd', new Date())
+      let time = new Date().toTimeString().substring(0, 8).replace(new RegExp(':', 'g'), '')
+      this.chatIdTemp = date + time + patientId.substring(patientId.length - 4) + doctorId.substring(doctorId.length - 4)
     },
     data() {
       return {
@@ -37,7 +48,10 @@
           text: '',
           photos: [],
         },
-        desList: []
+        desList: [],
+        tempFilePaths: [],
+        chatIdTemp: '',
+        uploadedImg: [],
       }
     },
     methods: {
@@ -54,6 +68,7 @@
         })
       },
       goChat() {
+        //todo 有图片的话先上传图片，获取返回的图片位置后再新建问诊
         if (this.describeInfo.text === '') {
           this.$widget.toastWarn('请填写病情描述')
           return
@@ -65,41 +80,74 @@
           }
         })
 
-        let date = this.$date.formatWithPatternDate('yyyymmdd', new Date())
-        let time = new Date().toTimeString().substring(0, 8).replace(new RegExp(':', 'g'), '')
-        let patientId = this.$store.state.userInfo.userId
-        let doctorId = this.$route.query.id
-        let chatIdTemp = date + time + patientId.substring(patientId.length - 4) + doctorId.substring(doctorId.length - 4)
-        // console.log(date + time + patientId.substring(patientId.length - 4) + doctorId.substring(doctorId.length - 4))
-        this.$post({
-          url: this.$api.createChat,
-          param: {
-            chatId: chatIdTemp,
-            doctorId: doctorId,
-            patientId: patientId,
-            chatStatus: 0,
-            complain: this.describeInfo.text,
-            chatTime: this.$date.format(new Date()),
-            doctorName: this.$route.query.name,
-            patientName: this.$store.state.userInfo.name
+        this.uploadOneImg(0).then(async res => {
+          if (res === 'complete') {
+            let patientId = this.$store.state.userInfo.userId
+            let doctorId = this.$route.query.id
+            // console.log(date + time + patientId.substring(patientId.length - 4) + doctorId.substring(doctorId.length - 4))
+            await this.$post({
+              url: this.$api.createChat,
+              param: {
+                chatId: this.chatIdTemp,
+                doctorId: doctorId,
+                patientId: patientId,
+                chatStatus: 0,
+                complain: this.describeInfo.text,
+                chatTime: this.$date.format(new Date()),
+                doctorName: this.$route.query.name,
+                patientName: this.$store.state.userInfo.name,
+                complainImgs: this.uploadedImg.toString()
+              }
+            }).then(res => {
+              this.$widget.toastSuccess('问诊请求提交成功！', () => {
+                this.$router.replace({
+                  path: '/pages/message/chat_room',
+                  query: {chatId: this.chatIdTemp, doctorId: doctorId, createNew: true}
+                })
+              })
+            })
           }
-        }).then(res => {
-          this.$widget.toastSuccess('问诊请求提交成功！', ()=>{
-            this.$router.replace({path: '/pages/message/chat_room', query:{chatId: chatIdTemp, doctorId: doctorId, createNew: true}})
-          })
         })
+
+        // let patientId = this.$store.state.userInfo.userId
+        // let doctorId = this.$route.query.id
+        // // console.log(date + time + patientId.substring(patientId.length - 4) + doctorId.substring(doctorId.length - 4))
+        // this.$post({
+        //   url: this.$api.createChat,
+        //   param: {
+        //     chatId: this.chatIdTemp,
+        //     doctorId: doctorId,
+        //     patientId: patientId,
+        //     chatStatus: 0,
+        //     complain: this.describeInfo.text,
+        //     chatTime: this.$date.format(new Date()),
+        //     doctorName: this.$route.query.name,
+        //     patientName: this.$store.state.userInfo.name,
+        //     msgImgs: this.uploadedImg.toString()
+        //   }
+        // }).then(res => {
+        //   this.$widget.toastSuccess('问诊请求提交成功！', () => {
+        //     this.$router.replace({
+        //       path: '/pages/message/chat_room',
+        //       query: {chatId: chatIdTemp, doctorId: doctorId, createNew: true}
+        //     })
+        //   })
+        // })
         // this.describeInfo.text = textTemp + this.describeInfo.text
         // console.log(this.describeInfo.text)
         // this.$router.replace({path: '/pages/message/chat_room'})
       },
       upload() {
+        let that = this
         wx.chooseImage({
-          count: 1,
+          count: 9 - this.tempFilePaths.length,
           sizeType: ['original', 'compressed'],
           sourceType: ['album', 'camera'],
           success(res) {
+            that.tempFilePaths = res.tempFilePaths
+            console.log(res.tempFilePaths)
             // tempFilePath可以作为img标签的src属性显示图片
-            console.log(res)
+
           }
         })
       },
@@ -108,36 +156,37 @@
       // deleteImgBtn (index) {
       //   this.fileArr.splice(index, 1)
       // }
-      // uploadOneImg (index) { // wx.uploadFile只能一张一张传
-      //   return new Promise((resolve, reject) => {
-      //     if (this.fileArr.length === 0) {
-      //       return resolve('complete')
-      //     }
-      //     wx.uploadFile({
-      //       url: this.$apis.commonUpload,
-      //       filePath: this.fileArr[index].path,
-      //       name: 'file',
-      //       header: this.header,
-      //       formData: {
-      //         belong: this.belong,
-      //         type: 2 // 1.一般图片2.咨询图片3.pdf4.pdf图片5.反馈与意见图片 6.历史图片中重复的图片
-      //       },
-      //       success: res => {
-      //         this.fileArr[index].id = JSON.parse(res.data).data.successList[0].fileid
-      //         if (index < this.fileArr.length - 1) {
-      //           resolve(this.uploadOneImg(++index))
-      //         } else {
-      //           resolve('complete')
-      //         }
-      //       },
-      //       fail: res => {
-      //         this.$widget.toastWarn('上传图片失败，请重试')
-      //         this.ableSubmit = true
-      //         reject(res)
-      //       }
-      //     })
-      //   })
-      // },
+      uploadOneImg(index) {
+        // wx.uploadFile只能一张一张传
+        return new Promise((resolve, reject) => {
+          if (this.tempFilePaths.length === 0) {
+            return resolve('complete')
+          }
+          wx.uploadFile({
+            url: this.$api.uploadImg,
+            filePath: this.tempFilePaths[index],
+            name: 'file',
+            header: {
+              'content-type': 'application/x-www-form-urlencoded',
+            },
+            formData: {
+              chatId: this.chatIdTemp
+            },
+            success: res => {
+              this.uploadedImg.push(JSON.parse(res.data).data.name)
+              if (index < this.tempFilePaths.length - 1) {
+                resolve(this.uploadOneImg(++index))
+              } else {
+                resolve('complete')
+              }
+            },
+            fail: res => {
+              this.$widget.toastWarn('上传图片失败，请重试')
+              reject(res)
+            }
+          })
+        })
+      },
 
       select(val) {
         this.desList[val].selected = !this.desList[val].selected
@@ -153,6 +202,19 @@
 
 <!--suppress CssInvalidPropertyValue -->
 <style lang="scss" scoped>
+  .image-wrap {
+    min-width: 120rpx;
+    min-height: 120rpx;
+    border-radius: 12rpx;
+    margin-right: 20rpx;
+    margin-bottom: 20rpx;
+    img {
+      max-width: 120rpx;
+      max-height: 120rpx;
+      border-radius: 12rpx;
+    }
+  }
+
   textarea {
     box-sizing: border-box;
     background-color: #f5f5f5;
