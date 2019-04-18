@@ -21,7 +21,8 @@
           </main>
           <div class="border-top1 flex-align-spacebetween margin-top8 padding8X padding-left20 color-999">
             <div>主诉：{{chat.complain}}</div>
-            <div class="padding-right30 color-theme">问诊中</div>
+            <div v-if="chat.chatStatus == 1" class="padding-right30 color-theme">问诊中</div>
+            <div v-if="chat.chatStatus == 0" class="padding-right30 color-666">待接诊</div>
           </div>
         </section>
       </div>

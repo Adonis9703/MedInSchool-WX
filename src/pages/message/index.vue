@@ -26,6 +26,10 @@
       Object.assign(this, this.$options.data())
     },
     onShow() {
+      wx.startPullDownRefresh()
+
+    },
+    onPullDownRefresh() {
       this.getMessage()
     },
     data() {
@@ -41,12 +45,13 @@
           param: {
             patientId: this.$store.state.userInfo.userId
           }
-        }).then(res=> {
+        }).then(res => {
+          wx.stopPullDownRefresh()
           this.chatList = res.data.reverse()
         })
       },
       goRoom(item) {
-        this.$router.push({path:'/pages/message/chat_room', query:{chatId: item.chatId, doctorId: item.doctorId}})
+        this.$router.push({path: '/pages/message/chat_room', query: {chatId: item.chatId, doctorId: item.doctorId}})
       },
       onDelete(i) {
         console.log(i)

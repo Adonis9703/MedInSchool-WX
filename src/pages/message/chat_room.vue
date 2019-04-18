@@ -23,9 +23,9 @@
         <img v-for="(item, index) in chatInfo.complainImgs" :key="index" :src="baseUrl+item" class="inline-block" style="width: 110rpx;height: 110rpx">
       </div>
       <div style="height: 150rpx;width: 2rpx"></div>
-      <div v-if="chatInfo.chatStatus==0" class="width100 text-align-center color-999 padding-top20">
+      <div v-if="chatInfo.chatStatus==0" class="width100 text-align-center color-999 padding-top70">
         问诊已经发起
-        <div class="color-theme font-size4 margin-top10">请等待医生接诊！</div>
+        <div class="color-theme bold font-size4 margin-top10">请等待医生接诊!</div>
       </div>
       <chat-pop v-for="(item, index) of msgList" :key="index" :content="item"></chat-pop>
       <div style="clear: both;"></div>
@@ -58,7 +58,7 @@
     </main>
     <footer class="fixed bottom0 width100 shadow">
       <div class="bgcolor-white flex-align-spacebetween padding20X paddingX20">
-        <input confirm-type="send" v-model.trim="text"/>
+        <input confirm-type="send" v-model.trim="text" :disabled="chatInfo.chatStatus !=1"/>
         <i @click="socketSend" class="icon-edit color-999 font-size18"></i>
       </div>
     </footer>
@@ -94,7 +94,6 @@
         this.scroll()
       }, 1600)
       socket = this.$socket(this.$api.base)
-      // socket = this.$socket('http://127.0.0.1:3000')
       socket.on('service2pat', data => {
         console.log(data)
         this.msgList.push(data)
@@ -144,8 +143,6 @@
         doctorInfo: {},
         msgList: [],
         text: '',
-        //todo 进入页面时通过接口查询聊天记录并显示，实时聊天时不请求，只通过socket连接
-        // 存到缓存中
         chatInfo: {},
         baseUrl: this.$api.base
       }
@@ -164,6 +161,10 @@
         }
       },
       socketSend() {
+        if (this.chatInfo.chatStatus == 0) {
+          this.$widget.toast('请先等待医生接诊哦')
+          return
+        }
         if (this.text === '') {
           this.$widget.toast('消息不能为空哦')
           return

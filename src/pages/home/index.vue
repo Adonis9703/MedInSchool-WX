@@ -48,7 +48,6 @@
     },
     onShow() {
       this.getDoctorList()
-      console.log(this.$date.formatWithPatternDate('yyyymmdd', new Date()))
     },
     onUnload() {
     },
@@ -61,7 +60,6 @@
             isOnline: 1
           }
         }).then(res => {
-          console.log(res)
           this.doctorList = res.data
         })
       },
@@ -70,19 +68,6 @@
       },
       select() {
         this.$router.push({path: '/pages/home/select_doctor'})
-      },
-      login() {
-        this.$post({
-          url: this.$api.login,
-          param: {
-            studentId: '5150510116',
-            password: 123456
-          }
-        }).then(res => {
-          console.log(`登录信息`, res.token)
-          this.$store.commit('setToken', res.token)
-          console.log(this.$store.state.token)
-        })
       },
       setCache() {
         this.$cache.set('name', 'alex')

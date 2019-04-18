@@ -13,7 +13,8 @@
           </div>
           <div class="text-align-center">
             <div class="font-size18 color-theme">{{userInfo.name}}</div>
-            <i class="margin-top16 font-size10 color-999" :class="{'icon-male': userInfo.sex==='男', 'icon-female': userInfo.sex==='女'}"></i>
+            <i class="margin-top16 font-size10 color-999"
+               :class="{'icon-male': userInfo.sex==='男', 'icon-female': userInfo.sex==='女'}"></i>
           </div>
           <div class="text-align-center padding-bottom30">
             <i class="inline-block icon-phone-fill font-size20 color-theme"></i>
@@ -87,11 +88,28 @@
           this.$router.push({path: '/pages/my/user_setting'})
         }
         if (index === 2) {
-          this.$store.commit('setUserInfo', null)
-          this.$store.commit('setToken', null)
-          this.$router.push({path: '/pages/login', reLaunch: true})
+          this.$post({
+            url: this.$api.getChatList,
+            param: {
+              patientId: this.$store.state.userInfo.userId
+            }
+          }).then(res => {
+            let count = 0
+            res.data.forEach(item => {
+              if (item.chatStatus == 1) {
+                count++
+              }
+            })
+            if (count > 0) {
+              this.$widget.confirm(`还有 ${count} 个问诊正在进行中，确定退出吗？`, () => {
+                this.$store.commit('setUserInfo', null)
+                this.$store.commit('setToken', null)
+                this.$router.push({path: '/pages/login', reLaunch: true})
+              })
+            }
+          })
         }
-      }
+      },
     }
   }
 </script>
