@@ -23,9 +23,10 @@
         <img v-for="(item, index) in chatInfo.complainImgs" :key="index" :src="baseUrl+item" class="inline-block" style="width: 110rpx;height: 110rpx">
       </div>
       <div style="height: 150rpx;width: 2rpx"></div>
-      <div v-if="chatInfo.chatStatus==0" class="width100 text-align-center color-999 padding-top70">
-        问诊已经发起
-        <div class="color-theme bold font-size4 margin-top10">请等待医生接诊!</div>
+      <div v-if="chatInfo.chatStatus==0" class="width100 text-align-center paddingX60 padding-top70 border-box">
+        <div class="border-top4">
+
+        </div>
       </div>
       <chat-pop v-for="(item, index) of msgList" :key="index" :content="item"></chat-pop>
       <div style="clear: both;"></div>
@@ -226,6 +227,9 @@
   }
 </script>
 <style lang="scss" scoped>
+  .border-top4 {
+    border-top: #32ae57 solid 6rpx;
+  }
   .splitter {
     margin: 0 12rpx;
     background-color: #999999;
