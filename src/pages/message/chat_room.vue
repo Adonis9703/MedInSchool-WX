@@ -8,7 +8,7 @@
             <div class="color-333 font-size6 bold">{{doctorInfo.name}}</div>
             <div class="color-666 margin-left20">{{doctorInfo.department}} · {{doctorInfo.title}}</div>
           </div>
-          <div class="end-btn font-size-2" @click="showConfirm = !showConfirm">结束问诊</div>
+          <div v-if="chatInfo.chatStatus == 1" class="end-btn font-size-2" @click="showConfirm = !showConfirm">结束问诊</div>
         </title>
         <div class="color-666 margin-top20" @click.stop="showDetail = !showDetail">
           问诊编号：{{chatInfo.chatId}}
@@ -22,9 +22,18 @@
         <div>主诉：{{chatInfo.complain}}</div>
         <img v-for="(item, index) in chatInfo.complainImgs" :key="index" :src="baseUrl+item" class="inline-block" style="width: 110rpx;height: 110rpx">
       </div>
-      <div style="height: 150rpx;width: 2rpx"></div>
-      <div v-if="chatInfo.chatStatus==0" class="width100 text-align-center paddingX60 padding-top70 border-box">
-        <div class="border-top4">
+      <div style="height: 180rpx;width: 2rpx"></div>
+      <div v-if="chatInfo.chatStatus==0" class="width100 paddingX60 padding-top40 border-box">
+        <div class="border-top12 bgcolor-white">
+          <div class="padding20X border-bottom1 color-theme font-size4 bold text-align-center">
+            问诊已经发起，请等待医生接诊
+          </div>
+          <ul class="paddingX80 padding20X color-333">
+            <li><span>1.</span> 医生接诊</li>
+            <li><span>2.</span> 实时问诊</li>
+            <li><span>3.</span> 医生下诊断</li>
+            <li><span>4.</span> 问诊结束，查看处方</li>
+          </ul>
 
         </div>
       </div>
@@ -104,15 +113,22 @@
       })
       socket.on('refreshChatStatus', () => {
         console.log('刷新就诊状态')
-        this.getChatInfo()
-        if (this.chatInfo.chatStatus == 0) {
-          console.log('待接诊')
-        } else if (this.chatInfo.chatStatus == 1) {
-          this.$widget.toastSuccess('医生已接诊')
-          console.log('问诊中')
-        } else {
-          console.log('问诊已结束')
-        }
+        this.getChatInfo().then(()=>{
+          if (this.chatInfo.chatStatus == 0) {
+            wx.setNavigationBarTitle({
+              title: '待接诊'
+            });
+          } else if (this.chatInfo.chatStatus == 1) {
+            this.$widget.toastSuccess('医生已接诊')
+            wx.setNavigationBarTitle({
+              title: '问诊中'
+            });
+          } else {
+            wx.setNavigationBarTitle({
+              title: '问诊已结束'
+            });
+          }
+        })
       })
     },
     onShow() {
@@ -191,8 +207,8 @@
           this.doctorInfo = res.data
         })
       },
-      getChatInfo() {
-        this.$post({
+      async getChatInfo() {
+        await this.$post({
           url: this.$api.getChatInfoByChatId,
           param: {
             chatId: this.$route.query.chatId
@@ -200,7 +216,6 @@
         }).then(res => {
           this.chatInfo = res.data
           this.chatInfo.complainImgs = this.chatInfo.complainImgs.split(',')
-          console.log('主诉图片', this.chatInfo.complainImgs)
           // if (res.data.chatStatus == 0) {
           //
           // } else if (res.data.chatStatus == 1) {
@@ -227,14 +242,18 @@
   }
 </script>
 <style lang="scss" scoped>
-  .border-top4 {
-    border-top: #32ae57 solid 6rpx;
+  .border-top12 {
+    border-top: #32ae57 solid 12rpx;
   }
   .splitter {
     margin: 0 12rpx;
     background-color: #999999;
     height: 26rpx;
     width: 2rpx;
+  }
+
+  li {
+    padding: 10rpx 0;
   }
 
   input {

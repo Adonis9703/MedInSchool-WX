@@ -89,7 +89,7 @@ const homeRoutes = [
     path: 'pages/message/chat_room',
     name: 'chat_room',
     config: {
-      navigationBarTitleText: '问诊中',
+      navigationBarTitleText: '问诊',
       usingComponents: {
         'van-toast': '/static/vant/toast/index',
         'van-popup': '/static/vant/popup/index',
