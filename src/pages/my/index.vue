@@ -33,9 +33,6 @@
           </div>
           <i class="inline-block icon-enter"></i>
         </div>
-        <!--<setting-cell :icon="'icon-clock'" :title="'就诊历史'" :border="true"/>-->
-        <!--<setting-cell @click.native="goSetting" :icon="'icon-edit'" :title="'编辑个人信息'" :border="true"/>-->
-        <!--<setting-cell :icon="'icon-feedback'" :title="'意见反馈'" :border="false"/>-->
       </div>
     </section>
   </div>
@@ -63,7 +60,7 @@
         cellConfig: [
           {
             icon: 'icon-clock',
-            title: '就诊历史',
+            title: '已完成的问诊',
             border: true
           },
           {

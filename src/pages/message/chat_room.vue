@@ -34,7 +34,6 @@
             <li><span>3.</span> 医生下诊断</li>
             <li><span>4.</span> 问诊结束，查看处方</li>
           </ul>
-
         </div>
       </div>
       <chat-pop v-for="(item, index) of msgList" :key="index" :content="item"></chat-pop>
@@ -65,6 +64,23 @@
         <!--</div>-->
         <!--</div>-->
       </div>
+      <div v-if="chatInfo.chatStatus==2" class="width100 paddingX60 padding-top40 border-box">
+        <div class="border-top12-end bgcolor-white">
+          <div class="padding20X color-orange font-size4 bold text-align-center">
+            问诊已完成
+          </div>
+        </div>
+      </div>
+      <div v-if="chatInfo.chatStatus==3" class="width100 paddingX60 padding-top40 border-box">
+        <div class="border-top12-end bgcolor-white">
+          <div class="padding20X color-orange font-size4 border-bottom1 bold text-align-center">
+            问诊被拒绝
+          </div>
+          <div class="paddingX60 padding20X">
+            <span class="color-666">拒绝理由：</span> {{chatInfo.refuseReason}}
+          </div>
+        </div>
+      </div>
     </main>
     <footer class="fixed bottom0 width100 shadow">
       <div class="bgcolor-white flex-align-spacebetween padding20X paddingX20">
@@ -73,10 +89,15 @@
       </div>
     </footer>
     <van-popup :show="showConfirm" :overlay="true" close-on-click-overlay>
-      <div class="paddingX40 padding40X">
-        确定要结束问诊吗？
-        <div @click="showConfirm = !showConfirm">
+      <div class="paddingX60 padding30X">
+        <div class="margin-top40 font-size4">确定结束问诊吗?</div>
+      </div>
+      <div class="flex-align-spacearound paddingX30 padding-bottom30 margin-top20">
+        <div @click="endChat" class="color-theme font-size2">
           确定
+        </div>
+        <div class="color-orange font-size2" @click="showConfirm = false">
+          取消
         </div>
       </div>
     </van-popup>
@@ -165,6 +186,20 @@
       }
     },
     methods: {
+      endChat() {
+        this.$post({
+          url: this.$api.updateChat,
+          param: {
+            chatId: this.chatInfo.chatId,
+            chatStatus: 2
+          }
+        }).then(res=> {
+          if (res.success) {
+            this.showConfirm = false
+            console.log('结束问诊')
+          }
+        })
+      },
       scroll() {
         if (this.msgList.length !== 0) {
           console.log(`滚动`)
@@ -180,6 +215,10 @@
       socketSend() {
         if (this.chatInfo.chatStatus == 0) {
           this.$widget.toast('请先等待医生接诊哦')
+          return
+        }
+        if (this.chatInfo.chatStatus == 2) {
+          this.$widget.toast('该问诊已经结束')
           return
         }
         if (this.text === '') {
@@ -216,13 +255,6 @@
         }).then(res => {
           this.chatInfo = res.data
           this.chatInfo.complainImgs = this.chatInfo.complainImgs.split(',')
-          // if (res.data.chatStatus == 0) {
-          //
-          // } else if (res.data.chatStatus == 1) {
-          //
-          // } else {
-          //
-          // }
         })
       },
       getMsgHistory() {
@@ -244,6 +276,9 @@
 <style lang="scss" scoped>
   .border-top12 {
     border-top: #32ae57 solid 12rpx;
+  }
+  .border-top12-end {
+    border-top: #FF7B35 solid 12rpx;
   }
   .splitter {
     margin: 0 12rpx;

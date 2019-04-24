@@ -11,7 +11,7 @@
             <div class="margin-left20" style="width: 80%;">
               <div class="flex-align-spacebetween">
                 <title class="color-333 font-size8 bold">{{chat.doctorName}}</title>
-                <span class="dot margin-right12"></span>
+                <!--<span class="dot margin-right12"></span>-->
               </div>
               <div class="color-666 margin-top10 flex-align-spacebetween">
                 <!--<div> {{chat.user}}：{{chat.message}}</div>-->
@@ -22,7 +22,10 @@
           <div class="border-top1 flex-align-spacebetween margin-top8 padding8X padding-left20 color-999">
             <div>主诉：{{chat.complain}}</div>
             <div v-if="chat.chatStatus == 1" class="padding-right30 color-theme">问诊中</div>
-            <div v-if="chat.chatStatus == 0" class="padding-right30 color-666">待接诊</div>
+            <div v-if="chat.chatStatus == 0" class="padding-right30 color-333">待接诊</div>
+            <div v-if="chat.chatStatus == 2" class="padding-right30 color-orange">已完成</div>
+            <div v-if="chat.chatStatus == 3" class="padding-right30 color-orange">已拒绝</div>
+
           </div>
         </section>
       </div>

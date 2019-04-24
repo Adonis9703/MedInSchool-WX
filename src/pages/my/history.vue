@@ -43,45 +43,26 @@
       return {
         doctor,
         patient,
-        historyList: [
-          {
-            doctorName: '医生',
-            chatId: '1123',
-            rpId: '1234567',
-            chatTime: '2018-12-12',
-            diagnosis: '吃饱了撑的',
-            complain: '脑壳疼脑壳疼脑脑壳疼脑壳疼脑壳疼脑壳疼壳疼脑壳疼脑壳疼'
-          },
-          {
-            doctorName: '医生',
-            chatId: '201811081270001160116',
-            rpId: '1234567',
-            chatTime: '2018-12-12',
-            diagnosis: '吃饱了撑的',
-            complain: '脑壳疼脑壳疼脑脑壳疼脑壳疼脑壳疼脑壳疼壳疼脑壳疼脑壳疼'
-          },
-          {
-            doctorName: '医生',
-            chatId: '1123',
-            rpId: '1234567',
-            chatTime: '2018-12-12',
-            diagnosis: '吃饱了撑的',
-            complain: '脑壳疼脑壳疼脑脑壳疼脑壳疼脑壳疼脑壳疼壳疼脑壳疼脑壳疼'
-          },
-          {
-            doctorName: '医生',
-            chatId: '1123',
-            rpId: '1234567',
-            chatTime: '2018-12-12',
-            diagnosis: '吃饱了撑的',
-            complain: '脑壳疼脑壳疼脑脑壳疼脑壳疼脑壳疼脑壳疼壳疼脑壳疼脑壳疼'
-          }
-        ]
+        historyList: []
       }
+    },
+    mounted() {
+      this.getHistory()
     },
     methods: {
       goRp() {
         this.$router.push({path: '/pages/my/rp'})
+      },
+      getHistory() {
+        this.$post({
+          url: this.$api.getChatList,
+          param: {
+            patientId: this.$store.state.userInfo.userId,
+            chatStatus: 2
+          }
+        }).then(res => {
+          this.historyList = res.data
+        })
       }
     }
   }
