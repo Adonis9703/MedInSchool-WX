@@ -60,7 +60,13 @@
             isOnline: 1
           }
         }).then(res => {
-          this.doctorList = res.data
+          if (res.success) {
+            this.doctorList = res.data
+          } else {
+            this.$widget.alert('请登陆', () => {
+              this.$router.push({path: '/pages/login', reLaunch: true})
+            })
+          }
         })
       },
       goFillInfo(item) {

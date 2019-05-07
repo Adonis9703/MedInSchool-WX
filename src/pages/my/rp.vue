@@ -17,7 +17,7 @@
             <div>问诊编号：{{rp.chatId}}</div>
           </div>
           <div class="padding10X paddingX10 border-bottom1">
-            <div>诊断结果：{{rp.diagnosis}}</div>
+            <div>诊断结果：{{rp.diagnosis || '暂无'}}</div>
           </div>
         </section>
         <main class="border-bottom1 padding-top20 padding-bottom60">

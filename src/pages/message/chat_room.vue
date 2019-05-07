@@ -8,7 +8,8 @@
             <div class="color-333 font-size6 bold">{{doctorInfo.name}}</div>
             <div class="color-666 margin-left20">{{doctorInfo.department}} · {{doctorInfo.title}}</div>
           </div>
-          <div v-if="chatInfo.chatStatus == 1" class="end-btn font-size-2" @click="showConfirm = !showConfirm">结束问诊</div>
+          <div v-if="chatInfo.chatStatus == 1" class="end-btn font-size-2" @click="showConfirm = !showConfirm">结束问诊
+          </div>
         </title>
         <div class="color-666 margin-top20" @click.stop="showDetail = !showDetail">
           问诊编号：{{chatInfo.chatId}}
@@ -20,7 +21,8 @@
     <main style="padding-bottom: 130rpx" id="pop-height">
       <div class="detail" :class="{'showDetail': showDetail, 'hiddenDetail': !showDetail}">
         <div>主诉：{{chatInfo.complain}}</div>
-        <img v-for="(item, index) in chatInfo.complainImgs" :key="index" :src="baseUrl+item" class="inline-block" style="width: 110rpx;height: 110rpx">
+        <img v-if="chatInfo.complainImgs && chatInfo.complainImgs!=''" v-for="(item, index) in chatInfo.complainImgs"
+             :key="index" :src="baseUrl+item" class="inline-block" style="width: 110rpx;height: 110rpx">
       </div>
       <div style="height: 180rpx;width: 2rpx"></div>
       <div v-if="chatInfo.chatStatus==0" class="width100 paddingX60 padding-top40 border-box">
@@ -82,19 +84,20 @@
         </div>
       </div>
     </main>
+    <van-icon name="video-o"></van-icon>
     <footer class="fixed bottom0 width100 shadow">
       <div class="bgcolor-white flex-align-spacebetween padding20X paddingX20">
-        <input confirm-type="send" v-model.trim="text" :disabled="chatInfo.chatStatus !=1"/>
-        <i @click="socketSend" class="icon-edit color-999 font-size18"></i>
+        <input confirm-type="send" @confirm="socketSend" v-model.trim="text" :disabled="chatInfo.chatStatus !=1"/>
+        <i @click="chooseImg" class="icon-plus color-999 font-size18"></i>
       </div>
     </footer>
     <van-popup :show="showConfirm" :overlay="true" close-on-click-overlay>
-      <div class="paddingX60 padding30X">
-        <div class="margin-top40 font-size4">确定结束问诊吗?</div>
+      <div class="paddingX40 padding30X">
+        <div class="margin-top40 font-size4">我已知晓问诊结果 主动结束问诊</div>
       </div>
       <div class="flex-align-spacearound paddingX30 padding-bottom30 margin-top20">
         <div @click="endChat" class="color-theme font-size2">
-          确定
+          结束
         </div>
         <div class="color-orange font-size2" @click="showConfirm = false">
           取消
@@ -134,7 +137,7 @@
       })
       socket.on('refreshChatStatus', () => {
         console.log('刷新就诊状态')
-        this.getChatInfo().then(()=>{
+        this.getChatInfo().then(() => {
           if (this.chatInfo.chatStatus == 0) {
             wx.setNavigationBarTitle({
               title: '待接诊'
@@ -157,7 +160,7 @@
       this.getChatInfo()
       this.getMsgHistory()
       socket.emit('refresh', this.$store.state.userInfo)
-      if (this.$route.query.createNew){
+      if (this.$route.query.createNew) {
         console.log(`新增问诊`)
         socket.emit('createChat', {
           doctorId: this.$route.query.doctorId
@@ -180,12 +183,76 @@
         chatId: null,
         doctorInfo: {},
         msgList: [],
+        tempFilePaths: [],
+        uploadedImg: [],
         text: '',
         chatInfo: {},
         baseUrl: this.$api.base
       }
     },
     methods: {
+      chooseImg() {
+        let that = this
+        wx.chooseImage({
+          count: 9 - this.tempFilePaths.length,
+          sizeType: ['original', 'compressed'],
+          sourceType: ['album', 'camera'],
+          success(res) {
+            that.tempFilePaths = res.tempFilePaths
+            that.uploadOneImg(0).then(res => {
+              if (res === 'complete') {
+                let data = {
+                  chatId: that.chatInfo.chatId,
+                  senderType: '0',
+                  senderId: that.$store.state.userInfo.userId,
+                  receiverId: that.$route.query.doctorId,
+                  msgText: that.text,
+                  msgImgs: JSON.stringify(that.uploadedImg),
+                  msgTime: new Date().toTimeString().substring(0, 5),
+                }
+                socket.emit('pat2service', data)
+                data.msgImgs = JSON.parse(data.msgImgs)
+                that.msgList.push(data)
+                that.uploadedImg = []
+              }
+            })
+          }
+        })
+      },
+      deleteImgBtn(index) {
+        this.tempFilePaths.splice(index, 1)
+      },
+      uploadOneImg(index) {
+        // wx.uploadFile只能一张一张传
+        return new Promise((resolve, reject) => {
+          if (this.tempFilePaths.length === 0) {
+            return resolve('complete')
+          }
+          wx.uploadFile({
+            url: this.$api.uploadImg,
+            filePath: this.tempFilePaths[index],
+            name: 'file',
+            header: {
+              'content-type': 'application/x-www-form-urlencoded',
+            },
+            formData: {
+              chatId: this.chatIdTemp
+            },
+            success: res => {
+              this.uploadedImg.push(JSON.parse(res.data).data.name)
+              if (index < this.tempFilePaths.length - 1) {
+                resolve(this.uploadOneImg(++index))
+              } else {
+                resolve('complete')
+              }
+            },
+            fail: res => {
+              this.$widget.toastWarn('上传图片失败，请重试')
+              reject(res)
+            }
+          })
+        })
+      },
       endChat() {
         this.$post({
           url: this.$api.updateChat,
@@ -193,8 +260,9 @@
             chatId: this.chatInfo.chatId,
             chatStatus: 2
           }
-        }).then(res=> {
+        }).then(res => {
           if (res.success) {
+            this.$widget.toastSuccess(`问诊已结束`)
             this.showConfirm = false
             console.log('结束问诊')
           }
@@ -265,6 +333,11 @@
           }
         }).then(res => {
           this.msgList = res.data
+          this.msgList.forEach(item => {
+            if (item.msgImgs) {
+              item.msgImgs = JSON.parse(item.msgImgs)
+            }
+          })
         })
       },
       goRp() {
@@ -277,9 +350,11 @@
   .border-top12 {
     border-top: #32ae57 solid 12rpx;
   }
+
   .border-top12-end {
     border-top: #FF7B35 solid 12rpx;
   }
+
   .splitter {
     margin: 0 12rpx;
     background-color: #999999;

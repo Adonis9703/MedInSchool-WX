@@ -88,7 +88,8 @@
           this.$post({
             url: this.$api.getChatList,
             param: {
-              patientId: this.$store.state.userInfo.userId
+              patientId: this.$store.state.userInfo.userId,
+              chatStatus: 1
             }
           }).then(res => {
             let count = 0
