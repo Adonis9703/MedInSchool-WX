@@ -86,9 +86,10 @@
     </main>
     <van-icon name="video-o"></van-icon>
     <footer class="fixed bottom0 width100 shadow">
-      <div class="bgcolor-white flex-align-spacebetween padding20X paddingX20">
+      <div class="bgcolor-white flex-align-spacearound padding20X paddingX20">
         <input confirm-type="send" @confirm="socketSend" v-model.trim="text" :disabled="chatInfo.chatStatus !=1"/>
-        <i @click="chooseImg" class="icon-plus color-999 font-size18"></i>
+        <i @click="chooseImg" class="icon-plus color-999 marginX10 font-size14"></i>
+        <i @click="record" class="icon-consultation color-999 font-size18"></i>
       </div>
     </footer>
     <van-popup :show="showConfirm" :overlay="true" close-on-click-overlay>
@@ -184,6 +185,8 @@
         doctorInfo: {},
         msgList: [],
         tempFilePaths: [],
+        radioFilePath: null,
+        radioFrameBuffer: null,
         uploadedImg: [],
         text: '',
         chatInfo: {},
@@ -191,6 +194,33 @@
       }
     },
     methods: {
+      record() {
+        const rm = wx.getRecorderManager()
+        rm.onStart(() => {
+          console.log('recorder start')
+        })
+        rm.onPause(() => {
+          console.log('recorder pause')
+        })
+        rm.onStop(res => {
+          console.log('recorder stop', res)
+          this.radioFilePath = res
+        })
+        rm.onFrameRecorded(res => {
+          this.radioFrameBuffer = res
+          console.log('frameBuffer.byteLength', this.radioFrameBuffer.byteLength)
+        })
+
+        const op = {
+          duration: 10000,
+          sampleRate: 44100,
+          numberOfChannels: 1,
+          encodeBitRate: 192000,
+          format: 'aac',
+          frameSize: 50
+        }
+        rm.start(op)
+      },
       chooseImg() {
         let that = this
         wx.chooseImage({
