@@ -15,5 +15,6 @@ export const api = {
   getMsgHistory: baseUrl + 'getMsgHistory',  //问诊消息历史
   getChatInfoByChatId: baseUrl + 'getChatInfoByChatId', //获取问诊详情,
   uploadImg: baseUrl + 'uploadFile',  //上传图片,
-  updateChat: baseUrl + 'updateChat'  //更新就诊信息
+  updateChat: baseUrl + 'updateChat',  //更新就诊信息,
+  getRpInfo: baseUrl + 'getRpByChatId'  //获取处方详情
 }

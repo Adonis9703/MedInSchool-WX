@@ -41,35 +41,37 @@
       <chat-pop v-for="(item, index) of msgList" :key="index" :content="item"></chat-pop>
       <div style="clear: both;"></div>
       <div class="paddingX40" @click="goRp">
-        <!--<div class="text-align-center padding20X color-999">医生已经开具处方</div>-->
-        <!--<div class="rp">-->
-        <!--<title class="flex-baseline-spacebetween paddingX26 padding-top26">-->
-        <!--<div class="flex-baseline">-->
-        <!--<div class="font-size4 margin-right20">{{chatInfo.patientName}}</div>-->
-        <!--<div class="color-666">{{chatInfo.patientSex}} {{chatInfo.patientAge}}</div>-->
-        <!--</div>-->
-        <!--<div class="color-666">{{chatInfo.rpTime}}</div>-->
-        <!--</title>-->
-        <!--<div class="color-999 margin16X paddingX26">诊断结果：{{chatInfo.diagnosis}}</div>-->
-        <!--<div class="rp-detail" v-for="(item, index) of chatInfo.rp" :key="index">-->
-        <!--<div class="flex-align-spacebetween color-333">-->
-        <!--<div style="max-width: 500rpx;">{{item.name}}</div>-->
-        <!--<div>{{item.amount}}{{item.amountUnit}}</div>-->
-        <!--</div>-->
-        <!--<div class=" margin-top16 color-666">-->
-        <!--<i class="icon-tip-fill margin-right10 color-theme"></i>-->
-        <!--<span>每次{{item.dosage}}{{item.dosageUnit}}</span>-->
-        <!--<span>&ensp;{{item.method}} </span>-->
-        <!--<span>{{item.timeState}}</span>-->
-        <!--<span>&ensp;共{{item.day}}天</span>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--</div>-->
       </div>
       <div v-if="chatInfo.chatStatus==2" class="width100 paddingX60 padding-top40 border-box">
-        <div class="border-top12-end bgcolor-white">
+        <div class="border-top12-end bgcolor-white border-bottom1">
           <div class="padding20X color-orange font-size4 bold text-align-center">
             问诊已完成
+          </div>
+          <div v-if="!chatInfo.rpId" class="paddingX20 padding-bottom20 color-999">
+            诊断结果：<span class="bold color-orange">{{chatInfo.diagnosis || '暂无'}}</span>
+          </div>
+        </div>
+      </div>
+      <div v-if="chatInfo.rpId" class="paddingX60">
+        <div class="rp">
+          <title class="flex-baseline-spacebetween paddingX26 padding-top26">
+            <div class="flex-baseline">
+              <div class="font-size4 margin-right20">{{chatInfo.patientName}}</div>
+              <div class="color-666">{{chatInfo.patientSex}} {{chatInfo.patientAge}}</div>
+            </div>
+          </title>
+          <div class="color-999 margin16X paddingX26">诊断结果：{{rpInfo.diagnosis}}</div>
+          <div class="rp-detail" v-for="(item, index) of rpInfo.medicines" :key="index">
+            <div class="flex-align-spacebetween color-333">
+              <div style="max-width: 500rpx;">{{item.name}}</div>
+              <div>{{item.amount}}{{item.amountUnit}}</div>
+            </div>
+            <div class=" margin-top16 color-666">
+              <i class="icon-tip-fill margin-right10 color-theme"></i>
+              <span>{{item.dosage}}</span>
+              <span>&ensp;{{item.method}} </span>
+              <span>{{item.timeState}}</span>
+            </div>
           </div>
         </div>
       </div>
@@ -127,7 +129,7 @@
       setTimeout(() => {
         this.showDetail = false
         this.scroll()
-      }, 1600)
+      }, 800)
       socket = this.$socket(this.$api.base)
       socket.on('service2pat', data => {
         console.log(data)
@@ -137,28 +139,29 @@
         this.text = ''
       })
       socket.on('refreshChatStatus', () => {
-        console.log('刷新就诊状态')
         this.getChatInfo().then(() => {
-          if (this.chatInfo.chatStatus == 0) {
-            wx.setNavigationBarTitle({
-              title: '待接诊'
-            });
-          } else if (this.chatInfo.chatStatus == 1) {
-            this.$widget.toastSuccess('医生已接诊')
-            wx.setNavigationBarTitle({
-              title: '问诊中'
-            });
-          } else {
-            wx.setNavigationBarTitle({
-              title: '问诊已结束'
-            });
-          }
+          this.$widget.toastSuccess('医生已接诊')
+        })
+      })
+      socket.on('endChat', () => {
+        this.getChatInfo().then(() => {
+          this.$widget.toastSuccess('医生已结束问诊')
+        })
+      })
+      socket.on('getRp', () => {
+        this.getChatInfo().then(() => {
+          this.getRp()
+          this.$widget.toastWarn('医生已开具处方')
         })
       })
     },
     onShow() {
       this.getDocInfo()
-      this.getChatInfo()
+      this.getChatInfo().then(() => {
+        if (this.chatInfo.rpId) {
+          this.getRp()
+        }
+      })
       this.getMsgHistory()
       socket.emit('refresh', this.$store.state.userInfo)
       if (this.$route.query.createNew) {
@@ -190,10 +193,23 @@
         uploadedImg: [],
         text: '',
         chatInfo: {},
-        baseUrl: this.$api.base
+        baseUrl: this.$api.base,
+        rpInfo: {}
       }
     },
     methods: {
+      getRp() {
+        this.$post({
+          url: this.$api.getRpInfo,
+          param: {
+            chatId: this.chatInfo.chatId
+          }
+        }).then(res => {
+          this.rpInfo = res.data
+          this.rpInfo.medicines = JSON.parse(this.rpInfo.medicines)
+          console.log(111, this.rpInfo)
+        })
+      },
       record() {
         const rm = wx.getRecorderManager()
         rm.onStart(() => {
@@ -305,7 +321,7 @@
             // 使页面滚动到底部
             wx.pageScrollTo({
               scrollTop: rect.bottom,
-              duration: 500
+              duration: 400
             })
           }).exec()
         }
@@ -438,7 +454,6 @@
 
   .rp {
     background-color: white;
-    border: #CDCDCD solid 2rpx;
     border-radius: 4rpx;
   }
 
