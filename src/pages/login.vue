@@ -20,9 +20,9 @@
         <input v-model="registerInfo.password" placeholder="密码" type="password" class="margin-top20"/>
         <input v-model="registerInfo.tel" placeholder="手机号" type="number" :class="{'bold': registerInfo.tel !==''}"
                class="margin-top20"/>
-        <input v-model="registerInfo.msgCode" placeholder="验证码" type="number"
-               :class="{'bold': registerInfo.msgCode !==''}"
-               class="margin-top20"/>
+        <!--<input v-model="registerInfo.msgCode" placeholder="验证码" type="number"-->
+               <!--:class="{'bold': registerInfo.msgCode !==''}"-->
+               <!--class="margin-top20"/>-->
         <div class="margin-top40 bold" @click="doRegister">注册</div>
       </div>
       <div :class="{'fadeIn': pageType === 2, 'fadeOut': pageType !== 2}"
@@ -30,8 +30,8 @@
         <input v-model="restInfo.id" type="number" :class="{'bold': restInfo.id !==''}" placeholder="学号"/>
         <input v-model="restInfo.tel" placeholder="手机号" type="number" :class="{'bold': restInfo.tel !==''}"
                class="margin-top20"/>
-        <input v-model="restInfo.msgCode" placeholder="验证码" type="number" :class="{'bold': restInfo.msgCode !==''}"
-               class="margin-top20"/>
+        <!--<input v-model="restInfo.msgCode" placeholder="验证码" type="number" :class="{'bold': restInfo.msgCode !==''}"-->
+               <!--class="margin-top20"/>-->
         <input v-model="restInfo.password" placeholder="新密码" type="password"
                class="margin-top20"/>
         <div class="margin-top40 bold" @click="">重置</div>
@@ -39,7 +39,7 @@
       <section class="flex-align-spacebetween paddingX100 absolute width100 border-box bottom100 color-ddd">
         <div v-if="pageType===1 || pageType===2" @click="pageType=0" class="color-white">用户登录</div>
         <div v-if="pageType===0 || pageType === 2" @click="pageType=1">用户注册</div>
-        <div v-if="pageType===1 || pageType === 0" @click="pageType=2">忘记密码</div>
+        <!--<div v-if="pageType===1 || pageType === 0" @click="pageType=2">忘记密码</div>-->
         <!--<div @click="$router.push('/im/webrtcroom/room/room')">视频</div>-->
       </section>
     </main>
@@ -94,7 +94,8 @@
           url: this.$api.login,
           param: {
             userId: this.loginInfo.id,
-            password: this.loginInfo.password
+            password: this.loginInfo.password,
+            type: 0
           }
         }).then(res => {
           console.log('login', res)

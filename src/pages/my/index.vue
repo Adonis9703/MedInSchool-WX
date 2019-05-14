@@ -104,6 +104,10 @@
                 this.$store.commit('setToken', null)
                 this.$router.push({path: '/pages/login', reLaunch: true})
               })
+            } else {
+              this.$store.commit('setUserInfo', null)
+              this.$store.commit('setToken', null)
+              this.$router.push({path: '/pages/login', reLaunch: true})
             }
           })
         }

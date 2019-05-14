@@ -93,7 +93,8 @@ const homeRoutes = [
       usingComponents: {
         'van-toast': '/static/vant/toast/index',
         'van-popup': '/static/vant/popup/index',
-        'van-icon': '/static/vant/icon/index'
+        'van-icon': '/static/vant/icon/index',
+        'van-loading': '/static/vant/loading/index',
       }
     }
   },

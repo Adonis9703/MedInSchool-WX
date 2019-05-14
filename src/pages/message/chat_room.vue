@@ -86,6 +86,7 @@
         </div>
       </div>
     </main>
+
     <van-icon name="video-o"></van-icon>
     <footer v-if="chatInfo.chatStatus == 1" class="fixed bottom0 width100 shadow">
       <div class="bgcolor-white flex-align-spacearound padding20X paddingX20">
@@ -115,7 +116,6 @@
         </div>
         <div v-if="timeCount>0" class="color-theme bold font-size10">{{timeCount}}</div>
         <div v-if="timeCount>0" class="margin-top20 font-size4 marginX40">即将开始录音</div>
-
       </div>
       <div v-if="timeCount==0" class="flex-align-spacearound paddingX30 padding-bottom30 margin-top20">
         <div @click="endRecord" class="color-orange">
@@ -127,6 +127,7 @@
       </div>
     </van-popup>
     <van-toast id="van-toast"/>
+    <!--<van-notify id="van-notify" />-->
   </div>
 </template>
 
@@ -222,8 +223,15 @@
           this.$widget.toastWarn('医生已开具处方')
         })
       })
+      ac.onPlay(() => {
+        console.log('播放')
+      })
+      ac.onStop(() => {
+        console.log('结束')
+      })
     },
     onShow() {
+      // Notify('通知内容');
       this.getDocInfo()
       this.getChatInfo().then(() => {
         if (this.chatInfo.rpId) {
@@ -304,9 +312,11 @@
               }
               socket.emit('pat2service', data)
               that.msgList.push(data)
+              this.isShowRecord = false
             },
             fail: res => {
               this.$widget.toastWarn('上传语音失败，请重试')
+              this.isShowRecord = false
             }
           })
         },500)
