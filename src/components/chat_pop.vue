@@ -4,9 +4,12 @@
     <div v-if="content.senderType == 0" class="flex-baseline float-right margin-bottom10">
       <div class="color-gray padding-right20 font-size-4">{{content.msgTime}}</div>
       <div class="msg color-white margin-right20 font-size4" :class="{'bgcolor-theme': !content.msgImgs, 'border1-theme': content.msgImgs}">
-        {{content.msgText}}
+        {{content.msgText || ''}}
         <div v-if="content.msgImgs && content.msgImgs.length>0">
           <img class="inline-block" v-for="(item, index) in content.msgImgs" :key="index" :src="baseUrl+item" style="width: 120rpx;height: 120rpx;">
+        </div>
+        <div @click="play(content.msgRadio)" v-if="content.msgRadio && content.msgRadio.length>0">
+          <div>点击播放语音</div>
         </div>
       </div>
       <img :src="patient" class="block margin-right20" style="width: 90rpx;height: 90rpx;"/>
@@ -40,6 +43,11 @@
         baseUrl: this.$api.base
       }
     },
+    methods: {
+      play(url) {
+        this.$emit('play', url)
+      }
+    }
   }
 </script>
 

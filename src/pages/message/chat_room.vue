@@ -38,7 +38,7 @@
           </ul>
         </div>
       </div>
-      <chat-pop v-for="(item, index) of msgList" :key="index" :content="item"></chat-pop>
+      <chat-pop v-for="(item, index) of msgList" :key="index" :content="item" @play="playAudio"></chat-pop>
       <div style="clear: both;"></div>
       <div class="paddingX40" @click="goRp">
       </div>
@@ -87,11 +87,11 @@
       </div>
     </main>
     <van-icon name="video-o"></van-icon>
-    <footer class="fixed bottom0 width100 shadow">
+    <footer v-if="chatInfo.chatStatus == 1" class="fixed bottom0 width100 shadow">
       <div class="bgcolor-white flex-align-spacearound padding20X paddingX20">
         <input confirm-type="send" @confirm="socketSend" v-model.trim="text" :disabled="chatInfo.chatStatus !=1"/>
         <i @click="chooseImg" class="icon-plus color-999 marginX10 font-size14"></i>
-        <i @click="record" class="icon-consultation color-999 font-size18"></i>
+        <i @click="showRecord" class="icon-consultation color-999 font-size18"></i>
       </div>
     </footer>
     <van-popup :show="showConfirm" :overlay="true" close-on-click-overlay>
@@ -99,11 +99,30 @@
         <div class="margin-top40 font-size4">我已知晓问诊结果 主动结束问诊</div>
       </div>
       <div class="flex-align-spacearound paddingX30 padding-bottom30 margin-top20">
-        <div @click="endChat" class="color-theme font-size2">
+        <div @click="endChat" class="color-theme">
           结束
         </div>
-        <div class="color-orange font-size2" @click="showConfirm = false">
+        <div class="color-orange" @click="showConfirm = false">
           取消
+        </div>
+      </div>
+    </van-popup>
+    <van-popup :show="isShowRecord">
+      <div class="padding40X marginX40 text-align-center border-bottom1">
+        <div v-if="timeCount==0" class="color-theme font-size4 marginX80">
+          <i class="icon-phone-fill block font-size8"></i>
+          <div class="margin-top20">录音中</div>
+        </div>
+        <div v-if="timeCount>0" class="color-theme bold font-size10">{{timeCount}}</div>
+        <div v-if="timeCount>0" class="margin-top20 font-size4 marginX40">即将开始录音</div>
+
+      </div>
+      <div v-if="timeCount==0" class="flex-align-spacearound paddingX30 padding-bottom30 margin-top20">
+        <div @click="endRecord" class="color-orange">
+          取消
+        </div>
+        <div class="color-theme" @click="sendRecord">
+          发送
         </div>
       </div>
     </van-popup>
@@ -119,11 +138,60 @@
 
   var socket = null
 
+  const rm = wx.getRecorderManager()
+  var radioFilePath = null
+  rm.onStart(() => {
+    console.log('recorder start')
+  })
+  rm.onPause(() => {
+    console.log('recorder pause')
+  })
+  rm.onStop(res => {
+    console.log('recorder stop', res)
+    radioFilePath = res
+  })
+  rm.onFrameRecorded(res => {
+    this.radioFrameBuffer = res
+    console.log('frameBuffer.byteLength', this.radioFrameBuffer.byteLength)
+  })
+
+  const op = {
+    duration: 60000,
+    sampleRate: 44100,
+    numberOfChannels: 2,
+    encodeBitRate: 192000,
+    format: 'aac',
+    frameSize: 50
+  }
+
+  const ac = wx.createInnerAudioContext()
+
   export default {
     components: {
       chatPop,
     },
-    name: "chat_room",
+    name: "chat_room", data() {
+      return {
+        doctor,
+        patient,
+        showConfirm: false,
+        showDetail: true,
+        chatId: null,
+        doctorInfo: {},
+        msgList: [],
+        tempFilePaths: [],
+        radioFilePath: null,
+        radioFrameBuffer: null,
+        uploadedImg: [],
+        text: '',
+        chatInfo: {},
+        baseUrl: this.$api.base,
+        rpInfo: {},
+        isShowRecord: false,
+        timer: null,
+        timeCount: 5,
+      }
+    },
     onLoad() {
       Object.assign(this, this.$options.data())
       setTimeout(() => {
@@ -178,26 +246,11 @@
         socket.disconnect()
       }
     },
-    data() {
-      return {
-        doctor,
-        patient,
-        showConfirm: false,
-        showDetail: true,
-        chatId: null,
-        doctorInfo: {},
-        msgList: [],
-        tempFilePaths: [],
-        radioFilePath: null,
-        radioFrameBuffer: null,
-        uploadedImg: [],
-        text: '',
-        chatInfo: {},
-        baseUrl: this.$api.base,
-        rpInfo: {}
-      }
-    },
     methods: {
+      playAudio(url) {
+        ac.src=this.baseUrl + url
+        ac.play()
+      },
       getRp() {
         this.$post({
           url: this.$api.getRpInfo,
@@ -207,35 +260,56 @@
         }).then(res => {
           this.rpInfo = res.data
           this.rpInfo.medicines = JSON.parse(this.rpInfo.medicines)
-          console.log(111, this.rpInfo)
         })
       },
-      record() {
-        const rm = wx.getRecorderManager()
-        rm.onStart(() => {
-          console.log('recorder start')
-        })
-        rm.onPause(() => {
-          console.log('recorder pause')
-        })
-        rm.onStop(res => {
-          console.log('recorder stop', res)
-          this.radioFilePath = res
-        })
-        rm.onFrameRecorded(res => {
-          this.radioFrameBuffer = res
-          console.log('frameBuffer.byteLength', this.radioFrameBuffer.byteLength)
-        })
-
-        const op = {
-          duration: 10000,
-          sampleRate: 44100,
-          numberOfChannels: 1,
-          encodeBitRate: 192000,
-          format: 'aac',
-          frameSize: 50
-        }
-        rm.start(op)
+      showRecord() {
+        this.isShowRecord = true
+        this.timer = setInterval(() => {
+          if (this.timeCount > 0) {
+            this.timeCount--
+          } else {
+            clearInterval(this.timer);
+            this.timer = null
+            rm.start(op)
+          }
+        }, 1000)
+      },
+      endRecord() {
+        rm.stop()
+        this.isShowRecord = false
+      },
+      sendRecord() {
+        let that = this
+        rm.stop()
+        setTimeout(()=> {
+          wx.uploadFile({
+            url: this.$api.uploadRecord,
+            filePath: radioFilePath.tempFilePath,
+            name: 'file',
+            header: {
+              'content-type': 'application/x-www-form-urlencoded',
+            },
+            formData: {
+              chatId: this.chatIdTemp
+            },
+            success: res => {
+              console.log('上传语音成功', JSON.parse(res.data).data.name)
+              let data = {
+                chatId: that.chatInfo.chatId,
+                senderType: '0',
+                senderId: that.$store.state.userInfo.userId,
+                receiverId: that.$route.query.doctorId,
+                msgRadio: JSON.parse(res.data).data.name,
+                msgTime: new Date().toTimeString().substring(0, 5),
+              }
+              socket.emit('pat2service', data)
+              that.msgList.push(data)
+            },
+            fail: res => {
+              this.$widget.toastWarn('上传语音失败，请重试')
+            }
+          })
+        },500)
       },
       chooseImg() {
         let that = this
@@ -281,10 +355,8 @@
             header: {
               'content-type': 'application/x-www-form-urlencoded',
             },
-            formData: {
-              chatId: this.chatIdTemp
-            },
             success: res => {
+              console.log('上传图片成功', res)
               this.uploadedImg.push(JSON.parse(res.data).data.name)
               if (index < this.tempFilePaths.length - 1) {
                 resolve(this.uploadOneImg(++index))
