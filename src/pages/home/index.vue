@@ -57,7 +57,8 @@
           url: this.$api.getDoctorList,
           param: {
             userType: 1,
-            isOnline: 1
+            isOnline: 1,
+            name: ''
           }
         }).then(res => {
           if (res.success) {

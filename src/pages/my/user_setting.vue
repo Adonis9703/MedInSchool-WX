@@ -129,7 +129,10 @@
       doUpdate() {
         this.$post({
           url: this.$api.updateUser,
-          param: this.userInfo
+          param: {
+            ...this.userInfo,
+            oldId: this.userInfo.userId
+          }
         }).then(res => {
             if (res.success) {
               this.$store.commit('setUserInfo', this.userInfo)

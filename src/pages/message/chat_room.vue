@@ -8,7 +8,7 @@
             <div class="color-333 font-size6 bold">{{doctorInfo.name}}</div>
             <div class="color-666 margin-left20">{{doctorInfo.department}} · {{doctorInfo.title}}</div>
           </div>
-          <div v-if="chatInfo.chatStatus == 1" class="end-btn font-size-2" @click="showConfirm = !showConfirm">结束问诊
+          <div v-if="chatInfo.chatStatus == 0 || chatInfo.chatStatus == 1" class="end-btn font-size-2" @click="showConfirm = !showConfirm">结束问诊
           </div>
         </title>
         <div class="color-666 margin-top20" @click.stop="showDetail = !showDetail">
