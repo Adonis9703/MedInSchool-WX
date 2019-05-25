@@ -88,9 +88,9 @@
     </main>
 
     <van-icon name="video-o"></van-icon>
-    <footer v-if="chatInfo.chatStatus == 1" class="fixed bottom0 width100 shadow">
+    <footer v-if="chatInfo.chatStatus !=2 " class="fixed bottom0 width100 shadow">
       <div class="bgcolor-white flex-align-spacearound padding20X paddingX20">
-        <input confirm-type="send" @confirm="socketSend" v-model.trim="text" :disabled="chatInfo.chatStatus !=1"/>
+        <input confirm-type="send" @confirm="socketSend" v-model.trim="text"/>
         <i @click="chooseImg" class="icon-plus color-999 marginX10 font-size14"></i>
         <i @click="showRecord" class="icon-consultation color-999 font-size18"></i>
       </div>
@@ -409,10 +409,10 @@
         }
       },
       socketSend() {
-        if (this.chatInfo.chatStatus == 0) {
-          this.$widget.toast('请先等待医生接诊哦')
-          return
-        }
+        // if (this.chatInfo.chatStatus == 0) {
+        //   this.$widget.toast('请先等待医生接诊哦')
+        //   return
+        // }
         if (this.chatInfo.chatStatus == 2) {
           this.$widget.toast('该问诊已经结束')
           return
